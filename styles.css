@@ -389,3 +389,20 @@ main {
 .btn-primary:hover {
   background-color: #c5d6f0;
 }
+
+/* Botón de eliminar tarea */
+.task-delete {
+  margin-left: var(--space-sm);
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.task-delete:hover {
+  border-color: var(--priority-high);
+  color: var(--priority-high);
+}
