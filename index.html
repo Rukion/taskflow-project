@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de tareas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- CABECERA -->
+  <header class="app-header">
+    <h1>App UNO Taskflow</h1>
+    <p class="subtitle">Comer helado es prioridad</p>
+  </header>
+
+  <!-- CONTENEDOR TIPO FORO -->
+  <div class="page-wrapper">
+    <div class="layout">
+      <!-- BARRA LATERAL -->
+      <aside class="sidebar">
+        <section class="search-section">
+          <label for="search" class="field-label">Buscar:</label>
+          <input
+            id="search"
+            type="text"
+            class="search-input"
+            placeholder="(ej. 'sorbete de frambuesa')"
+          />
+        </section>
+
+        <section class="menu-section">
+          <p class="menu-title">MENU:</p>
+          <button class="menu-button menu-button-primary">TODAS</button>
+          <button class="menu-button">HELADOS</button>
+          <button class="menu-button">PENDIENTES</button>
+          <button class="menu-button">COMPLETADAS</button>
+        </section>
+      </aside>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main>
+        <section class="task-section">
+          <h2>TODAS</h2>
+
+          <ul class="task-list">
+            <!-- TAREA 1 -->
+            <li class="task">
+              <!-- checkbox oculto que controla el estado -->
+              <input type="checkbox" id="task-1" class="task-toggle" />
+
+              <!-- la tarjeta completa es un label: click en cualquier parte cambia el estado -->
+              <label for="task-1" class="task-item">
+                <div class="task-main">
+                  <div class="task-title-row">
+                    <h3 class="task-title">Comer Helado</h3>
+                    <span class="task-deadline">Cuando apetezca.</span>
+                  </div>
+
+                  <div class="task-meta">
+                    <div class="task-tags">
+                      <span class="task-tag">Alimentación</span>
+                      <span class="task-tag">Salud</span>
+                      <span class="task-tag">Helado</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span class="task-badge priority-high">Muy Alta</span>
+              </label>
+            </li>
+
+            <!-- TAREA 2 -->
+            <li class="task">
+              <input type="checkbox" id="task-2" class="task-toggle" />
+              <label for="task-2" class="task-item">
+                <div class="task-main">
+                  <div class="task-title-row">
+                    <h3 class="task-title">Go Gym</h3>
+                    <span class="task-deadline">Done.</span>
+                  </div>
+
+                  <div class="task-meta">
+                    <div class="task-tags">
+                      <span class="task-tag">Salud</span>
+                      <span class="task-tag">Bro</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span class="task-badge priority-medium">Media</span>
+              </label>
+            </li>
+
+            <!-- TAREA 3 -->
+            <li class="task">
+              <input type="checkbox" id="task-3" class="task-toggle" />
+              <label for="task-3" class="task-item">
+                <div class="task-main">
+                  <div class="task-title-row">
+                    <h3 class="task-title">Aprender HTML y CSS</h3>
+                    <span class="task-deadline">3 months left.</span>
+                  </div>
+
+                  <div class="task-meta">
+                    <div class="task-tags">
+                      <span class="task-tag">DAM</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span class="task-badge priority-low">Baja</span>
+              </label>
+            </li>
+            
+            <!-- TAREA 4 -->
+            <li class="task">
+              <input type="checkbox" id="task-4" class="task-toggle" />
+              <label for="task-4" class="task-item">
+                <div class="task-main">
+                  <div class="task-title-row">
+                    <h3 class="task-title">Saludar a los compis</h3>
+                    <span class="task-deadline">now.</span>
+                  </div>
+
+                  <div class="task-meta">
+                    <div class="task-tags">
+                      <span class="task-tag">Hola</span>
+                      <span class="task-tag">Equipo Caiman</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span class="task-badge priority-medium">Random</span>
+              </label>
+            </li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- PIE -->
+  <footer class="app-footer">
+    App UNO - Organización
+  </footer>
+</body>
+</html>
