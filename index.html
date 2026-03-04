@@ -6,6 +6,15 @@
   <title>Lista de tareas</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
+<footer class="app-footer">
+    Mini app de tareas · Desarrollada por Carlos
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
 <body>
   <!-- CABECERA -->
   <header class="app-header">
@@ -39,53 +48,53 @@
 
       <!-- CONTENIDO PRINCIPAL -->
       <main>
-  <section class="task-section">
-    <h2>Nueva tarea</h2>
+        <section class="task-section">
+          <h2>Nueva tarea</h2>
 
-    <form id="task-form" class="task-form">
-      <div class="form-row">
-        <label for="task-title">Título:</label>
-        <input
-          type="text"
-          id="task-title"
-          name="title"
-          required
-          placeholder="Escribe aquí la tarea…"
-        />
-      </div>
+          <form id="task-form" class="task-form">
+            <div class="form-row">
+              <label for="task-title">Título:</label>
+              <input
+                type="text"
+                id="task-title"
+                name="title"
+                required
+                placeholder="Escribe aquí la tarea…"
+              />
+            </div>
 
-      <div class="form-row">
-        <label for="task-tags">Categorías (separadas por comas):</label>
-        <input
-          type="text"
-          id="task-tags"
-          name="tags"
-          placeholder="ej: DAM, estudio, prácticas"
-        />
-      </div>
+            <div class="form-row">
+              <label for="task-tags">Categorías (separadas por comas):</label>
+              <input
+                type="text"
+                id="task-tags"
+                name="tags"
+                placeholder="ej: DAM, estudio, prácticas"
+              />
+            </div>
 
-      <div class="form-row">
-        <label for="task-priority">Prioridad:</label>
-        <select id="task-priority" name="priority">
-          <option value="high">Alta</option>
-          <option value="medium">Media</option>
-          <option value="low">Baja</option>
-        </select>
-      </div>
+            <div class="form-row">
+              <label for="task-priority">Prioridad:</label>
+              <select id="task-priority" name="priority">
+                <option value="high">Alta</option>
+                <option value="medium">Media</option>
+                <option value="low">Baja</option>
+              </select>
+            </div>
 
-      <div class="form-row">
-        <label for="task-deadline">Tiempo restante (texto):</label>
-        <input
-          type="text"
-          id="task-deadline"
-          name="deadline"
-          placeholder="ej: 16h left., 2 days left."
-        />
-      </div>
+            <div class="form-row">
+              <label for="task-deadline">Tiempo restante (texto):</label>
+              <input
+                type="text"
+                id="task-deadline"
+                name="deadline"
+                placeholder="ej: 16h left., 2 days left."
+              />
+            </div>
 
-      <button type="submit" class="btn-primary">Añadir tarea</button>
-    </form>
-  </section>
+            <button type="submit" class="btn-primary">Añadir tarea</button>
+          </form>
+        </section>
 
   <section class="task-section">
     <h2>Tareas de hoy</h2>

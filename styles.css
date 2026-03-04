@@ -348,3 +348,44 @@ main {
     align-items: flex-start;
   }
 }
+
+/* ====== FORMULARIO DE NUEVA TAREA ====== */
+
+.task-form {
+  border: 1px solid var(--color-border);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+  background-color: #f9f9f9;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-sm);
+}
+
+.form-row label {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.form-row input,
+.form-row select {
+  font-size: 12px;
+  padding: 3px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.btn-primary {
+  margin-top: var(--space-sm);
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-primary);
+  background-color: #dde7f7;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #c5d6f0;
+}
