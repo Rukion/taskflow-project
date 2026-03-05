@@ -1,42 +1,73 @@
 // app.js
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Referencias al formulario y a sus campos
+
+  // ================================
+  // 1. ESTADO GLOBAL (array de tareas)
+  // ================================
+  // --- NUEVO ---
+  let tasks = [];
+  
+    // 2. CARGAR LOCALSTORAGE (PUNTO 5) -------------
+  const saved = localStorage.getItem("tasks");
+
+  if (saved) {
+    try {
+      tasks = JSON.parse(saved);
+
+      tasks.forEach((task) => {
+        addTaskToList(task);
+      });
+
+    } catch (error) {
+      console.error("Error al cargar las tareas:", error);
+      tasks = [];
+    }
+  }
+
+  // 2. Referencias al formulario y a sus campos
   const form = document.getElementById("task-form");
   const titleInput = document.getElementById("task-title");
   const tagsInput = document.getElementById("task-tags");
   const prioritySelect = document.getElementById("task-priority");
   const deadlineInput = document.getElementById("task-deadline");
 
-  // 2. Referencia a la lista de tareas donde añadiremos las nuevas
+  // 3. Lista UL donde van las tareas
   const taskList = document.getElementById("task-list");
 
   if (!form || !taskList) {
-    console.warn("Falta el formulario o la lista de tareas en el HTML.");
+    console.warn("Falta el formulario o la lista de tareas.");
     return;
   }
 
-  // 3. Función para crear y añadir una tarea al DOM
-  function addTaskToList({ title, tags, priority, deadline }) {
-    // crear <li class="task">
+  // ================================
+  // 4. Función para guardar tareas
+  // ================================
+  // --- NUEVO ---
+  function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  // ================================
+  // 5. Función para añadir tareas al DOM
+  // ================================
+  function addTaskToList(task) {
+
+    const { id, title, tags, priority, deadline, completed } = task;
+
     const li = document.createElement("li");
     li.classList.add("task");
 
-    // generar un id único para el checkbox
-    const taskId = "task-" + Date.now();
-
-    // crear <input type="checkbox" class="task-toggle" id="...">
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.id = taskId;
+    checkbox.id = id;
     checkbox.classList.add("task-toggle");
+    checkbox.checked = completed;
 
-    // crear <label for="..." class="task-item">
     const label = document.createElement("label");
     label.classList.add("task-item");
-    label.setAttribute("for", taskId);
+    label.setAttribute("for", id);
 
-    // ----- bloque principal: título + cuenta atrás -----
     const taskMain = document.createElement("div");
     taskMain.classList.add("task-main");
 
@@ -49,42 +80,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const deadlineSpan = document.createElement("span");
     deadlineSpan.classList.add("task-deadline");
-    deadlineSpan.textContent = deadline || ""; // si no pones nada, queda vacío
+    deadlineSpan.textContent = deadline;
 
     titleRow.appendChild(h3);
     titleRow.appendChild(deadlineSpan);
 
-    // ----- categorías como globos -----
     const meta = document.createElement("div");
     meta.classList.add("task-meta");
 
     const tagsContainer = document.createElement("div");
     tagsContainer.classList.add("task-tags");
 
-    // convertir "DAM, estudio, prácticas" en ["DAM","estudio","prácticas"]
-    const tagsArray =
-      tags
-        ?.split(",")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0) || [];
-
-    tagsArray.forEach((tagText) => {
-      const tagSpan = document.createElement("span");
-      tagSpan.classList.add("task-tag");
-      tagSpan.textContent = tagText;
-      tagsContainer.appendChild(tagSpan);
+    const tagsArray = tags || [];
+    tagsArray.forEach((t) => {
+      const span = document.createElement("span");
+      span.classList.add("task-tag");
+      span.textContent = t;
+      tagsContainer.appendChild(span);
     });
 
     meta.appendChild(tagsContainer);
-
     taskMain.appendChild(titleRow);
     taskMain.appendChild(meta);
 
-    // ----- badge de prioridad -----
     const badge = document.createElement("span");
     badge.classList.add("task-badge");
 
-    // prioridad determina la clase y el texto
     let priorityText = "";
     switch (priority) {
       case "high":
@@ -96,47 +117,52 @@ document.addEventListener("DOMContentLoaded", () => {
         priorityText = "Media";
         break;
       case "low":
-      default:
         badge.classList.add("priority-low");
         priorityText = "Baja";
         break;
     }
     badge.textContent = priorityText;
 
-    
-    // ----- botón de eliminar -----
+    // ================================
+    // 6. Botón de eliminar
+    // ================================
     const deleteButton = document.createElement("button");
-    deleteButton.type = "button"; // para que no actúe como submit en el formulario
+    deleteButton.type = "button";
     deleteButton.textContent = "Eliminar";
     deleteButton.classList.add("task-delete");
 
-    // Al hacer clic, eliminamos el <li> del DOM
     deleteButton.addEventListener("click", (event) => {
-        // Evitamos que el click en el botón se considere click en el label
-        event.stopPropagation();
-        li.remove();
+      event.stopPropagation();
+
+      // --- NUEVO ---
+      // 1. Eliminar del array
+      tasks = tasks.filter((t) => t.id !== id);
+
+      // 2. Guardar
+      saveTasks();
+
+      // 3. Borrar del DOM
+      li.remove();
     });
 
-
-    // montar la estructura del label
     label.appendChild(taskMain);
     label.appendChild(badge);
-    label.appendChild(deleteButton); // añadimos el botón dentro de la tarea
+    label.appendChild(deleteButton);
 
-    // añadir checkbox y label al <li>
     li.appendChild(checkbox);
     li.appendChild(label);
 
-    // por último, añadir el <li> a la lista
     taskList.appendChild(li);
   }
 
-  // 4. Manejar el envío del formulario
+  // ================================
+  // 7. SUBMIT DEL FORMULARIO
+  // ================================
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const title = titleInput.value.trim();
-    const tags = tagsInput.value.trim();
+    const tagsRaw = tagsInput.value.trim();
     const priority = prioritySelect.value;
     const deadline = deadlineInput.value.trim();
 
@@ -145,18 +171,31 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Llamamos a la función que añade la tarea a la lista
-    addTaskToList({
+    // --- NUEVO ---
+    const newTask = {
+      id: "task-" + Date.now(),
       title,
-      tags,
+      tags: tagsRaw
+        ? tagsRaw.split(",").map((t) => t.trim()).filter((t) => t)
+        : [],
       priority,
       deadline,
-    });
+      completed: false,
+    };
 
-    // Limpiar el formulario (punto clave del enunciado)
+    // Añadir al array
+    tasks.push(newTask);
+
+    // Guardar
+    saveTasks();
+
+    // Pintar en el DOM
+    addTaskToList(newTask);
+
+    // Limpiar el formulario
     form.reset();
-
-    // Opcional: volver a enfocar el input del título
     titleInput.focus();
   });
+
 });
+``
