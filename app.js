@@ -1,73 +1,76 @@
 // app.js
 
 document.addEventListener("DOMContentLoaded", () => {
-
   // ================================
-  // 1. ESTADO GLOBAL (array de tareas)
+  //  1. ESTADO GLOBAL
   // ================================
-  // --- NUEVO ---
   let tasks = [];
-  
-    // 2. CARGAR LOCALSTORAGE (PUNTO 5) -------------
-  const saved = localStorage.getItem("tasks");
 
-  if (saved) {
-    try {
-      tasks = JSON.parse(saved);
-
-      tasks.forEach((task) => {
-        addTaskToList(task);
-      });
-
-    } catch (error) {
-      console.error("Error al cargar las tareas:", error);
-      tasks = [];
-    }
-  }
-
-  // 2. Referencias al formulario y a sus campos
+  // ================================
+  //  2. REFERENCIAS AL DOM
+  // ================================
   const form = document.getElementById("task-form");
   const titleInput = document.getElementById("task-title");
   const tagsInput = document.getElementById("task-tags");
   const prioritySelect = document.getElementById("task-priority");
   const deadlineInput = document.getElementById("task-deadline");
 
-  // 3. Lista UL donde van las tareas
   const taskList = document.getElementById("task-list");
+  const searchInput = document.getElementById("search");
 
   if (!form || !taskList) {
-    console.warn("Falta el formulario o la lista de tareas.");
+    console.warn("Falta el formulario o la lista de tareas en el HTML.");
     return;
   }
 
   // ================================
-  // 4. Función para guardar tareas
+  //  3. PERSISTENCIA: LOCALSTORAGE
   // ================================
-  // --- NUEVO ---
+  const STORAGE_KEY = "tasks";
+
   function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }
+
+  function loadTasks() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        tasks = parsed;
+        tasks.forEach((task) => addTaskToList(task));
+      }
+    } catch (error) {
+      console.error("Error al leer tareas de localStorage:", error);
+      tasks = [];
+    }
   }
 
   // ================================
-  // 5. Función para añadir tareas al DOM
+  //  4. PINTAR TAREA EN EL DOM
   // ================================
   function addTaskToList(task) {
-
     const { id, title, tags, priority, deadline, completed } = task;
 
+    // <li class="task">
     const li = document.createElement("li");
     li.classList.add("task");
 
+    // <input type="checkbox" ...>
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = id;
     checkbox.classList.add("task-toggle");
     checkbox.checked = completed;
 
+    // <label for="id" class="task-item">
     const label = document.createElement("label");
     label.classList.add("task-item");
     label.setAttribute("for", id);
 
+    // ----- parte izquierda: título + deadline + tags -----
     const taskMain = document.createElement("div");
     taskMain.classList.add("task-main");
 
@@ -80,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const deadlineSpan = document.createElement("span");
     deadlineSpan.classList.add("task-deadline");
-    deadlineSpan.textContent = deadline;
+    deadlineSpan.textContent = deadline || "";
 
     titleRow.appendChild(h3);
     titleRow.appendChild(deadlineSpan);
@@ -91,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tagsContainer = document.createElement("div");
     tagsContainer.classList.add("task-tags");
 
-    const tagsArray = tags || [];
+    const tagsArray = Array.isArray(tags) ? tags : [];
     tagsArray.forEach((t) => {
       const span = document.createElement("span");
       span.classList.add("task-tag");
@@ -100,9 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     meta.appendChild(tagsContainer);
+
     taskMain.appendChild(titleRow);
     taskMain.appendChild(meta);
 
+    // ----- badge de prioridad -----
     const badge = document.createElement("span");
     badge.classList.add("task-badge");
 
@@ -117,34 +122,43 @@ document.addEventListener("DOMContentLoaded", () => {
         priorityText = "Media";
         break;
       case "low":
+      default:
         badge.classList.add("priority-low");
         priorityText = "Baja";
         break;
     }
     badge.textContent = priorityText;
 
-    // ================================
-    // 6. Botón de eliminar
-    // ================================
+    // ----- botón de eliminar -----
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.textContent = "Eliminar";
     deleteButton.classList.add("task-delete");
 
     deleteButton.addEventListener("click", (event) => {
+      // que no dispare el click del label
       event.stopPropagation();
 
-      // --- NUEVO ---
-      // 1. Eliminar del array
+      // 1) quitar del array
       tasks = tasks.filter((t) => t.id !== id);
 
-      // 2. Guardar
+      // 2) guardar
       saveTasks();
 
-      // 3. Borrar del DOM
+      // 3) borrar del DOM
       li.remove();
     });
 
+    // ----- marcar completada -----
+    checkbox.addEventListener("change", () => {
+      const taskIndex = tasks.findIndex((t) => t.id === id);
+      if (taskIndex !== -1) {
+        tasks[taskIndex].completed = checkbox.checked;
+        saveTasks();
+      }
+    });
+
+    // montar la tarjeta
     label.appendChild(taskMain);
     label.appendChild(badge);
     label.appendChild(deleteButton);
@@ -156,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ================================
-  // 7. SUBMIT DEL FORMULARIO
+  //  5. AÑADIR TAREA DESDE FORM
   // ================================
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -171,31 +185,62 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // --- NUEVO ---
     const newTask = {
       id: "task-" + Date.now(),
       title,
       tags: tagsRaw
-        ? tagsRaw.split(",").map((t) => t.trim()).filter((t) => t)
+        ? tagsRaw
+            .split(",")
+            .map((t) => t.trim())
+            .filter((t) => t.length > 0)
         : [],
       priority,
       deadline,
       completed: false,
     };
 
-    // Añadir al array
+    // 1) añadir al array
     tasks.push(newTask);
 
-    // Guardar
+    // 2) guardar en localStorage
     saveTasks();
 
-    // Pintar en el DOM
+    // 3) pintar en el DOM
     addTaskToList(newTask);
 
-    // Limpiar el formulario
+    // 4) limpiar formulario
     form.reset();
     titleInput.focus();
   });
 
+  // ================================
+  //  6. FILTRO DE BÚSQUEDA (BONUS)
+  // ================================
+  function applyFilter(query) {
+    const normalizedQuery = query.toLowerCase();
+
+    const allTasks = taskList.querySelectorAll(".task");
+    allTasks.forEach((li) => {
+      // texto de la tarjeta: título, tags, deadline, etc.
+      const text = li.innerText.toLowerCase();
+
+      if (text.includes(normalizedQuery)) {
+        li.style.display = ""; // visible
+      } else {
+        li.style.display = "none"; // oculto
+      }
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (event) => {
+      const query = event.target.value.trim();
+      applyFilter(query);
+    });
+  }
+
+  // ================================
+  //  7. CARGA INICIAL DESDE LOCALSTORAGE
+  // ================================
+  loadTasks();
 });
-``
