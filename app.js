@@ -17,6 +17,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const taskList = document.getElementById("task-list");
   const searchInput = document.getElementById("search");
+  
+        // Delegación de eventos para eliminar tareas (funciona para tareas viejas y nuevas)
+        taskList.addEventListener("click", (event) => {
+          // ¿Se ha hecho clic sobre un botón de eliminar o dentro de él?
+          const deleteButton = event.target.closest(".task-delete");
+          if (!deleteButton) {
+            return; // si el click no viene de un .task-delete, no hacemos nada
+          }
+
+          // Buscamos el <li class="task"> más cercano
+          const li = deleteButton.closest(".task");
+          if (!li) {
+            return;
+          }
+
+          // Intentamos averiguar el id de la tarea (del checkbox)
+          const checkbox = li.querySelector(".task-toggle");
+          const taskId = checkbox ? checkbox.id : null;
+
+          // Si tenemos taskId, lo usamos para actualizar el array tasks
+          if (taskId) {
+            tasks = tasks.filter((t) => t.id !== taskId);
+            saveTasks();
+          }
+
+          // Borramos del DOM
+          li.remove();
+        });
+
 
   if (!form || !taskList) {
     console.warn("Falta el formulario o la lista de tareas en el HTML.");
@@ -134,20 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteButton.type = "button";
     deleteButton.textContent = "Eliminar";
     deleteButton.classList.add("task-delete");
-
-    deleteButton.addEventListener("click", (event) => {
-      // que no dispare el click del label
-      event.stopPropagation();
-
-      // 1) quitar del array
-      tasks = tasks.filter((t) => t.id !== id);
-
-      // 2) guardar
-      saveTasks();
-
-      // 3) borrar del DOM
-      li.remove();
-    });
 
     // ----- marcar completada -----
     checkbox.addEventListener("change", () => {
