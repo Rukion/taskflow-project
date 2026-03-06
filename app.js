@@ -234,6 +234,35 @@ function updateCategoryMenu() {
   }
 
   // ================================
+  //  LISTENER PARA FILTRO DE BÚSQUEDA Y PRIORIDAD
+  // ================================
+  if (searchInput) {
+    searchInput.addEventListener("input", (event) => {
+      activeSearchQuery = event.target.value.trim();
+      applyFilter(); // ahora usamos estado global
+    });
+  }
+  if (priorityMenu) {
+    priorityMenu.addEventListener("click", (event) => {
+      const button = event.target.closest(".priority-filter");
+      if (!button) return;
+
+      // 1) Actualizar el estado del filtro de prioridad
+      activePriorityFilter = button.dataset.priority || "";
+
+      // 2) Marcar visualmente el botón activo
+      const allButtons = priorityMenu.querySelectorAll(".priority-filter");
+      allButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      // 3) Aplicar filtros combinados (texto + prioridad)
+      applyFilter();
+    });
+  }
+
+
+
+  // ================================
   //  5. AÑADIR TAREA DESDE FORM
   // ================================
   form.addEventListener("submit", (event) => {
@@ -313,31 +342,6 @@ function updateCategoryMenu() {
           }
         }
       }
-    if (searchInput) {
-      searchInput.addEventListener("input", (event) => {
-        activeSearchQuery = event.target.value.trim();
-        applyFilter();
-      });
-    }
-    if (priorityMenu) {
-      priorityMenu.addEventListener("click", (event) => {
-        const button = event.target.closest(".priority-filter");
-        if (!button) return;
-
-        // actualizar estado de filtro activo
-        activePriorityFilter = button.dataset.priority || "";
-
-        // marcar botón activo visualmente
-        const allButtons = priorityMenu.querySelectorAll(".priority-filter");
-        allButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        // aplicar filtros (texto + prioridad)
-        applyFilter();
-      });
-    }
-
-
 
     // 3) Mostrar solo si cumple ambos filtros
     if (matchesText && matchesPriority) {
