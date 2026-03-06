@@ -149,27 +149,58 @@ main {
   font-weight: bold;
 }
 
-.menu-button {
-  width: 100%;
-  text-align: left;
-  background-color: #ffffff;
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  padding: 4px 6px;
-  font-size: 12px;
-  cursor: pointer;
-  margin-bottom: var(--space-xs);
+
+/* Contenedor de categorías: fila con wrap */
+.category-menu {
+  display: flex;
+  flex-wrap: wrap;        /* 🔥 aquí está la magia del salto de línea */
+  gap: 4px;               /* espacio horizontal/vertical entre globos */
 }
 
-.menu-button:hover {
+/* Cada categoría como “píldora” compacta */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 999px;   /* forma de pastilla */
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  color: var(--color-text);
+  cursor: default;        /* de momento solo informativo */
+  white-space: nowrap;    /* que no rompa la palabra dentro */
+}
+
+.category-pill:hover {
   border-color: var(--color-primary);
 }
 
-.menu-button-primary {
+.priority-menu { /* MENÚ DE PRIORIDADES */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.priority-filter {
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.priority-filter:hover {
+  border-color: var(--color-primary);
+}
+
+.priority-filter.active {
   background-color: #dde7f7;
   border-color: var(--color-primary);
   font-weight: bold;
 }
+
 
 /* =========================
    LISTA DE TAREAS (FLEX)

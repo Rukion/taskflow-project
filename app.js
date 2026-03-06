@@ -4,7 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================================
   //  1. ESTADO GLOBAL
   // ================================
-  let tasks = [];
+  let tasks = [];  
+  let activePriorityFilter = ""; // --- estado del filtro de prioridad y de búsqueda ---
+  let activeSearchQuery = "";
+
 
   // ================================
   //  2. REFERENCIAS AL DOM
@@ -14,9 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const tagsInput = document.getElementById("task-tags");
   const prioritySelect = document.getElementById("task-priority");
   const deadlineInput = document.getElementById("task-deadline");
-
   const taskList = document.getElementById("task-list");
   const searchInput = document.getElementById("search");
+  const categoryMenu = document.getElementById("category-menu");
+  const priorityMenu = document.getElementById("priority-menu");
   
         // Delegación de eventos para eliminar tareas (funciona para tareas viejas y nuevas)
         taskList.addEventListener("click", (event) => {
@@ -44,6 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Borramos del DOM
           li.remove();
+
+          // actualizar menú de categorías
+          updateCategoryMenu();
+
         });
 
 
@@ -70,12 +78,53 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Array.isArray(parsed)) {
         tasks = parsed;
         tasks.forEach((task) => addTaskToList(task));
-      }
+      }    
+
+      updateCategoryMenu(); // actualizar el menú de categorías al cargar las tareas
+    
     } catch (error) {
       console.error("Error al leer tareas de localStorage:", error);
       tasks = [];
     }
   }
+  
+// ================================
+//  ACTUALIZAR MENÚ DE CATEGORÍAS
+// ================================
+function updateCategoryMenu() {
+  if (!categoryMenu) return;
+
+  // 1) Reunir todas las categorías (tags) en un Set para tener únicas
+  const categorySet = new Set();
+
+  tasks.forEach((task) => {
+    if (Array.isArray(task.tags)) {
+      task.tags.forEach((tag) => {
+        const clean = tag.trim();
+        if (clean) {
+          categorySet.add(clean);
+        }
+      });
+    }
+  });
+
+  // 2) Convertir a array y ordenar alfabéticamente
+  const categories = Array.from(categorySet).sort((a, b) =>
+    a.localeCompare(b, "es", { sensitivity: "base" }) // español españa
+  );
+
+  // 3) Limpiar el contenido actual del menú
+  categoryMenu.innerHTML = "";
+
+  // 4) Crear un botón/píldora por categoría
+  categories.forEach((cat) => {
+    const pill = document.createElement("button");
+    pill.type = "button";
+    pill.classList.add("category-pill");
+    pill.textContent = cat;
+    categoryMenu.appendChild(pill);
+  });
+}
 
   // ================================
   //  4. PINTAR TAREA EN EL DOM
@@ -213,7 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
       deadline,
       completed: false,
     };
-
+   
     // 1) añadir al array
     tasks.push(newTask);
 
@@ -223,36 +272,57 @@ document.addEventListener("DOMContentLoaded", () => {
     // 3) pintar en el DOM
     addTaskToList(newTask);
 
-    // 4) limpiar formulario
+    // 👉 4) actualizar menú de categorías
+    updateCategoryMenu();
+
+    // 5) limpiar formulario
     form.reset();
     titleInput.focus();
+
   });
 
   // ================================
-  //  6. FILTRO DE BÚSQUEDA (BONUS)
+  //  6. FILTRO DE BÚSQUEDA Y PRIORIDAD
   // ================================
-  function applyFilter(query) {
-    const normalizedQuery = query.toLowerCase();
-
+  
+  function applyFilter() {
+    const normalizedQuery = activeSearchQuery.toLowerCase();
     const allTasks = taskList.querySelectorAll(".task");
+
     allTasks.forEach((li) => {
-      // texto de la tarjeta: título, tags, deadline, etc.
       const text = li.innerText.toLowerCase();
 
-      if (text.includes(normalizedQuery)) {
-        li.style.display = ""; // visible
-      } else {
-        li.style.display = "none"; // oculto
-      }
-    });
-  }
+      // 1) Coincidencia por texto
+      const matchesText = text.includes(normalizedQuery);
 
-  if (searchInput) {
-    searchInput.addEventListener("input", (event) => {
-      const query = event.target.value.trim();
-      applyFilter(query);
-    });
-  }
+      // 2) Coincidencia por prioridad
+      let matchesPriority = true; // por defecto, si no hay filtro, pasa
+
+      if (activePriorityFilter) {
+        const badge = li.querySelector(".task-badge");
+        if (!badge) {
+          matchesPriority = false;
+        } else {
+          const classList = badge.classList;
+          if (activePriorityFilter === "high") {
+            matchesPriority = classList.contains("priority-high");
+          } else if (activePriorityFilter === "medium") {
+            matchesPriority = classList.contains("priority-medium");
+          } else if (activePriorityFilter === "low") {
+            matchesPriority = classList.contains("priority-low");
+          }
+        }
+      }
+
+    // 3) Mostrar solo si cumple ambos filtros
+    if (matchesText && matchesPriority) {
+      li.style.display = "";
+    } else {
+      li.style.display = "none";
+    }
+  });
+}
+
 
   // ================================
   //  7. CARGA INICIAL DESDE LOCALSTORAGE
