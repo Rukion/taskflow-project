@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>App UNO - efecto2000</title>
 
-  <link rel="stylesheet" href="styles.css" />
+  styles.css
 </head>
 
 <body class="app-2000">
 
-  <!-- ============================= -->
-  <!-- TOP BAR -->
-  <!-- ============================= -->
+  <!-- ========================================================= -->
+  <!-- TOP BAR - ESTILO WINDOWS 98 / 2000                       -->
+  <!-- ========================================================= -->
   <header class="topbar">
 
-    <button class="btn btn-top" id="btn-add-quick">+</button>
-    <button class="btn btn-top" id="btn-3day">3 day</button>
-    <button class="btn btn-top" id="btn-38week">38 week</button>
+    <button class="btn" id="btn-add-quick">+</button>
+    <button class="btn" id="btn-3day">3 day</button>
+    <button class="btn" id="btn-38week">38 week</button>
 
     <div class="search-box">
       <input type="text" id="search" placeholder="Search…" />
@@ -27,120 +27,28 @@
   </header>
 
 
-  <!-- ============================= -->
-  <!-- PANEL DUAL: PROGRESS / FILTER -->
-  <!-- ============================= -->
+  <!-- ========================================================= -->
+  <!-- PANEL: PROGRESS ↔ FILTER                                 -->
+  <!-- ========================================================= -->
   <section class="status-section">
 
+    <!-- Botón que alterna entre PROGRESS / FILTER -->
     <button id="status-toggle" class="status-toggle-btn">Filter</button>
 
+    <!-- Recuadro con las dos vistas -->
     <div class="status-panel">
 
-      <!-- VISTA PROGRESS -->
+      <!-- Vista PROGRESS -->
       <div id="status-view-progress" class="status-view status-view--progress">
         <span class="progress-text">Progress: 6/14</span>
         <span class="important-pill">2 IMPORTANT</span>
       </div>
 
-      <!-- VISTA FILTER -->
+      <!-- Vista FILTER -->
       <div id="status-view-filters" class="status-view hidden">
 
+        <!-- Filtro por prioridad -->
         <div class="priority-menu">
           <button type="button" class="priority-filter active" data-priority="">
             Todas
           </button>
-          <button type="button" class="priority-filter" data-priority="high">
-            Alta
-          </button>
-          <button type="button" class="priority-filter" data-priority="medium">
-            Media
-          </button>
-          <button type="button" class="priority-filter" data-priority="low">
-            Baja
-          </button>
-        </div>
-
-        <div id="category-menu" class="category-menu"></div>
-
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ============================= -->
-  <!-- LISTA DE TAREAS -->
-  <!-- ============================= -->
-  <main id="task-area">
-
-    <ul id="task-list" class="task-list">
-
-      <li class="task">
-        <div class="priority-bar high"></div>
-        <label class="task-card">
-
-          <div class="task-content">
-            <div class="task-title-row">
-              <h3 class="task-title">Comer</h3>
-              <span class="task-deadline">14:15</span>
-            </div>
-
-            <div class="task-tags">
-              <span class="tag">salud</span>
-              <span class="tag">Dieta</span>
-              <span class="tag">500kcal</span>
-            </div>
-          </div>
-
-          <button class="btn store-btn">Store</button>
-        </label>
-      </li>
-
-      <li class="task">
-        <div class="priority-bar medium"></div>
-        <label class="task-card">
-          <div class="task-content">
-            <div class="task-title-row">
-              <h3 class="task-title">Comprar hilo coser</h3>
-              <span class="task-deadline">sin prisa</span>
-            </div>
-
-            <div class="task-tags">
-              <span class="tag">casa</span>
-            </div>
-          </div>
-          <button class="btn store-btn">Store</button>
-        </label>
-      </li>
-
-      <li class="task">
-        <div class="priority-bar high"></div>
-        <label class="task-card">
-          <div class="task-content">
-            <div class="task-title-row">
-              <h3 class="task-title">2º Entrega TFG</h3>
-              <span class="task-deadline">15/03</span>
-            </div>
-          </div>
-          <button class="btn store-btn">Store</button>
-        </label>
-      </li>
-
-    </ul>
-
-  </main>
-
-
-  <!-- ============================= -->
-  <!-- BOTONES INFERIORES -->
-  <!-- ============================= -->
-  <footer class="footer-buttons">
-
-    <button id="btn-add" class="btn btn-bottom">+ ADD TASK</button>
-    <button id="btn-archive" class="btn btn-bottom">ARCHIVE</button>
-
-  </footer>
-
-  <script src="app.js"></script>
-</body>
-</html>
