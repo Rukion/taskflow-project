@@ -1,439 +1,48 @@
-/* =========================
-   VARIABLES GLOBALES
-   ========================= */
-:root {
-  /* Colores estilo web / foro clásico */
-  --color-bg: #dcdcdc;              /* fondo general gris claro */
-  --color-page: #ffffff;            /* fondo principal blanco */
-  --color-header: #003366;          /* azul cabecera */
-  --color-header-text: #ffffff;
-  --color-sidebar-bg: #f2f2f2;      /* lateral gris claro */
-  --color-border: #cccccc;
-  --color-border-soft: #e5e5e5;
-  --color-primary: #336699;
-  --color-link: #003399;
-  --color-text: #000000;
-  --color-text-muted: #555555;
+/* ============================================================
+   ESTILO GENERAL EFECTO 2000 (Clean Retro)
+   ============================================================ */
 
-  --color-tag-bg: #eef4ff;
-  --color-tag-border: #c8d4f5;
-
-  --priority-high: #cc0000;
-  --priority-medium: #cc9900;
-  --priority-low: #009933;
-
-  /* Espaciados y bordes */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-lg: 16px;
-  --radius-sm: 3px;
-  --radius-md: 4px;
-
-  /* Tipografía */
-  --font-family: "Verdana", "Tahoma", system-ui, -apple-system, "Segoe UI",
-    sans-serif;
-  --font-size-base: 14px;
+body.app-2000 {
+  margin: 0;
+  padding: 0;
+  background: #fdfdfd;
+  font-family: "Verdana", "Tahoma", sans-serif;
+  color: #000;
 }
 
-/* =========================
-   ESTILOS GENERALES
-   ========================= */
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  background-color: var(--color-bg);
-  color: var(--color-text);
+/* Utilidades */
+.hidden {
+  display: none !important;
 }
 
-/* Contenedor principal tipo foro */
-.page-wrapper {
-  max-width: 960px;
-  margin: 0 auto;
-  background-color: var(--color-page);
-  border: 1px solid var(--color-border);
-  border-top: none;
-  min-height: 100vh;
+/* Borde negro consistente */
+.box-border {
+  border: 2px solid #000;
+  padding: 4px;
 }
 
-/* =========================
-   CABECERA
-   ========================= */
-.app-header {
-  max-width: 960px;
-  margin: 0 auto;
-  background-color: var(--color-header);
-  color: var(--color-header-text);
-  padding: var(--space-md) var(--space-lg);
-  border: 1px solid #002244;
-  border-bottom: none;
-}
 
-.app-header h1 {
-  margin: 0;
-  font-size: 20px;
-}
+/* ============================================================
+   TOP BAR (Los 4 botones + buscador)
+   ============================================================ */
 
-.app-header .subtitle {
-  margin: var(--space-xs) 0 0;
-  font-size: 11px;
-}
-
-/* =========================
-   LAYOUT PRINCIPAL
-   ========================= */
-.layout {
+.topbar {
   display: grid;
-  grid-template-columns: 1fr 2.5fr; /* aside más estrecho, main más ancho */
-  gap: var(--space-lg);
-  padding: var(--space-lg);
+  grid-template-columns: auto auto auto 1fr;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 2px solid #000;
 }
 
-/* MAIN */
-main {
-  border: 1px solid var(--color-border);
-  padding: var(--space-md);
-  background-color: var(--color-page);
-}
-
-.task-section + .task-section {
-  margin-top: var(--space-lg);
-}
-
-.task-section h2 {
-  margin-top: 0;
-  border-bottom: 1px solid var(--color-border-soft);
-  padding-bottom: var(--space-xs);
-  font-size: 16px;
-}
-
-/* =========================
-   SIDEBAR
-   ========================= */
-.sidebar {
-  border: 1px solid var(--color-border);
-  padding: var(--space-md);
-  background-color: var(--color-sidebar-bg);
-}
-
-/* Buscador */
-.field-label {
-  display: block;
-  font-size: 12px;
-  margin-bottom: var(--space-xs);
-}
-
-.search-input {
-  width: 100%;
-  padding: 3px 4px;
-  font-size: 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-/* Menú */
-.menu-section {
-  margin-top: var(--space-lg);
-}
-
-.menu-title {
-  margin: 0 0 var(--space-xs) 0;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-
-/* Contenedor de categorías: fila con wrap */
-.category-menu {
-  display: flex;
-  flex-wrap: wrap;        /* 🔥 aquí está la magia del salto de línea */
-  gap: 4px;               /* espacio horizontal/vertical entre globos */
-}
-
-/* Cada categoría como “píldora” compacta */
-.category-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 6px;
-  font-size: 11px;
-  border-radius: 999px;   /* forma de pastilla */
-  border: 1px solid var(--color-border);
-  background-color: #ffffff;
-  color: var(--color-text);
-  cursor: default;        /* de momento solo informativo */
-  white-space: nowrap;    /* que no rompa la palabra dentro */
-}
-
-.category-pill:hover {
-  border-color: var(--color-primary);
-}
-
-.priority-menu { /* MENÚ DE PRIORIDADES */
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.priority-filter {
-  padding: 2px 6px;
-  font-size: 11px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background-color: #ffffff;
-  color: var(--color-text);
+/* Botones superiores */
+.btn {
+  border: 2px solid #000;
+  background: #fff;
   cursor: pointer;
-}
-
-.priority-filter:hover {
-  border-color: var(--color-primary);
-}
-
-.priority-filter.active {
-  background-color: #dde7f7;
-  border-color: var(--color-primary);
-  font-weight: bold;
-}
-
-
-/* =========================
-   LISTA DE TAREAS (FLEX)
-   ========================= */
-
-.task-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-/* Cada li envuelve checkbox + tarjeta */
-.task {
-  margin-bottom: var(--space-sm);
-}
-
-/* Checkbox oculto: controla el estado de la tarjeta */
-.task-toggle {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Tarjeta de tarea. Es un <label>, flex para maquetar contenido y prioridad */
-.task-item {
-  display: flex; /* FLEX: requisito de la práctica */
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--color-border);
-  background-color: #fdfdfd;
-  cursor: pointer;
-  gap: var(--space-md);
-
-  /* ⭐ Transición suave (BONUS) */
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    opacity 0.25s ease;
-}
-
-/* Separador sutil estilo tabla/foro */
-.task + .task .task-item {
-  border-top: 1px solid var(--color-border);
-}
-
-/* Hover clásico */
-.task-item:hover {
-  background-color: #f5f5ff;
-  border-color: var(--color-primary);
-}
-
-/* Columna izquierda: título, tags, categoría */
-.task-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-/* Fila título + cuenta atrás */
-.task-title-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-md);
-}
-
-.task-title {
-  margin: 0;
-  font-size: 13px;
-}
-
-.task-deadline {
-  font-size: 11px;
-  color: var(--color-text-muted);
-}
-
-/* Categorías como globos */
-.task-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: var(--space-xs);
-}
-
-.task-tag {
-  display: inline-block;
-  padding: 2px 6px;
-  font-size: 11px;
-  border-radius: 999px;
-  background-color: var(--color-tag-bg);
-  border: 1px solid var(--color-tag-border);
-}
-
-/* BADGE de prioridad a la derecha */
-.task-badge {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background-color: #ffffff;
-  white-space: nowrap;
-}
-
-.priority-high {
-  border-color: var(--priority-high);
-  color: var(--priority-high);
-}
-
-.priority-medium {
-  border-color: var(--priority-medium);
-  color: var(--priority-medium);
-}
-
-.priority-low {
-  border-color: var(--priority-low);
-  color: var(--priority-low);
-}
-
-/* =========================
-   ESTADO COMPLETADO (BONUS)
-   ========================= */
-/* Cuando el checkbox está marcado, la tarjeta cambia suavemente */
-.task-toggle:checked + .task-item {
-  background-color: #f1f1f1;
-  border-color: var(--color-border-soft);
-  opacity: 0.7;
-}
-
-.task-toggle:checked + .task-item .task-title {
-  text-decoration: line-through;
-  color: var(--color-text-muted);
-}
-
-/* =========================
-   FOOTER
-   ========================= */
-.app-footer {
-  max-width: 960px;
-  margin: 0 auto;
-  border: 1px solid var(--color-border);
-  border-top: none;
-  padding: var(--space-sm) var(--space-lg);
-  background-color: #f5f5f5;
-  font-size: 11px;
-  text-align: right;
-  color: var(--color-text-muted);
-}
-
-/* =========================
-   MEDIA QUERY (MÓVIL)
-   ========================= */
-@media (max-width: 768px) {
-  .layout {
-    display: flex;
-    flex-direction: column; /* aside encima del main en móvil */
-    padding: var(--space-md);
-  }
-
-  .sidebar {
-    margin-bottom: var(--space-md);
-  }
-
-  .task-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .task-badge {
-    align-self: flex-end;
-  }
-
-  .task-title-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* ====== FORMULARIO DE NUEVA TAREA ====== */
-
-.task-form {
-  border: 1px solid var(--color-border);
-  padding: var(--space-md);
-  margin-bottom: var(--space-lg);
-  background-color: #f9f9f9;
-}
-
-.form-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: var(--space-sm);
-}
-
-.form-row label {
-  font-size: 12px;
-  margin-bottom: 2px;
-}
-
-.form-row input,
-.form-row select {
-  font-size: 12px;
-  padding: 3px 4px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-.btn-primary {
-  margin-top: var(--space-sm);
-  font-size: 12px;
-  padding: 4px 8px;
-  border: 1px solid var(--color-primary);
-  background-color: #dde7f7;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: #c5d6f0;
-}
-
-/* Botón de eliminar tarea */
-.task-delete {
-  margin-left: var(--space-sm);
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background-color: #ffffff;
-  color: var(--color-text-muted);
-  cursor: pointer;
-}
-
-.task-delete:hover {
-  border-color: var(--priority-high);
-  color: var(--priority-high);
-}
+  font-size: 14px;
+  padding: 4px 10px;
+  min-width: 60px;
