@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let activePriorityFilter = "";
   let activeSearchQuery = "";
 
-  const STORAGE_KEY = "tasks_v2";
+  //Linea de test para practicar flujo de git desde terminal :)
+
 
   // ================================
   // 2. REFERENCIAS AL DOM
