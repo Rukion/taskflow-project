@@ -3,162 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>App UNO - efecto2000</title>
-
-  <!-- Tu CSS habitual -->
+  <title>Lista de tareas</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body class="app-2000">
+  <script src="app.js"></script>
+</body>
+</html>
 
-  <!-- ============================= -->
-  <!--       TOP BAR (mockup)        -->
-  <!-- ============================= -->
-  <header class="topbar">
-
-    <button class="btn btn-top" id="btn-add-quick">+</button>
-
-    <button class="btn btn-top" id="btn-3day">3 day</button>
-
-    <button class="btn btn-top" id="btn-38week">38 week</button>
-
-    <div class="search-box">
-      <input type="text" id="search" placeholder="Search…" />
-      <span class="search-icon">🔍</span>
-    </div>
-
+<body>
+  <!-- CABECERA -->
+  <header class="app-header">
+    <h1>App UNO Taskflow</h1>
+    <p class="subtitle">Comer helado es prioridad</p>
   </header>
 
-  <!-- ========================================================== -->
-  <!-- PANEL DUAL: PROGRESS <-> FILTER (según tu diseño exacto)   -->
-  <!-- ========================================================== -->
-  <section class="status-section">
+  <!-- CONTENEDOR TIPO FORO -->
+  <div class="page-wrapper">
+    <div class="layout">
+      <!-- BARRA LATERAL -->
+      <aside class="sidebar">
+        <section class="search-section"> <!-- BUSCADOR -->
+          <label for="search" class="field-label">Buscar:</label>
+          <input
+            id="search"
+            type="text"
+            class="search-input"
+            placeholder="(ej. 'sorbete de frambuesa')"
+          />
+        </section>      
 
-    <!-- Botón que intercambia modos -->
-    <button id="status-toggle" class="status-toggle-btn">Filter</button>
+        <section class="menu-section"> <!-- NUEVO MENÚ DE CATEGORÍAS -->
+          <p class="menu-title">CATEGORÍAS:</p>
+          <div id="category-menu" class="category-menu">
+            <!-- Aquí se pintarán las categorías dinámicamente -->
+          </div>
+        </section>
+      </aside>    
+ 
+        <section class="menu-section"> <!-- FILTRO DE PRIORIDAD -->
+          <p class="menu-title">Filtrar:</p>
+          <div id="priority-menu" class="priority-menu">
+            <button type="button" class="priority-filter active" data-priority="">Todas</button>
+            <button type="button" class="priority-filter" data-priority="high">Alta</button>
+            <button type="button" class="priority-filter" data-priority="medium">Media</button>
+            <button type="button" class="priority-filter" data-priority="low">Baja</button>
+          </div>  
 
-    <!-- Recuadro que cambia su contenido -->
-    <div class="status-panel">
+      <!-- CONTENIDO PRINCIPAL -->
+      <main>
+        <section class="task-section">
+          <h2>Nueva tarea</h2>
 
-      <!-- Vista 1: PROGRESS -->
-      <div id="status-view-progress" class="status-view">
-        <span class="progress-text">Progress: 6/14</span>
-        <span class="important-pill">2 IMPORTANT</span>
-      </div>
+          <form id="task-form" class="task-form">
+            <div class="form-row">
+              <label for="task-title">Título:</label>
+              <input
+                type="text"
+                id="task-title"
+                name="title"
+                required
+                placeholder="Escribe aquí la tarea…"
+              />
+            </div>
 
-      <!-- Vista 2: FILTERS (escondida por defecto) -->
-      <div id="status-view-filters" class="status-view hidden">
+            <div class="form-row">
+              <label for="task-tags">Categorías (separadas por comas):</label>
+              <input
+                type="text"
+                id="task-tags"
+                name="tags"
+                placeholder="ej: DAM, estudio, prácticas"
+              />
+            </div>
 
-        <!-- FILTRO POR PRIORIDAD -->
-        <div class="priority-menu">
-          <button type="button" class="priority-filter active" data-priority="">
-            Todas
-          </button>
+            <div class="form-row">
+              <label for="task-priority">Prioridad:</label>
+              <select id="task-priority" name="priority">
+                <option value="high">Alta</option>
+                <option value="medium">Media</option>
+                <option value="low">Baja</option>
+              </select>
+            </div>
 
-          <button type="button" class="priority-filter" data-priority="high">
-            Alta
-          </button>
+            <div class="form-row">
+              <label for="task-deadline">Tiempo restante (texto):</label>
+              <input
+                type="text"
+                id="task-deadline"
+                name="deadline"
+                placeholder="ej: 16h left., 2 days left."
+              />
+            </div>
 
-          <button type="button" class="priority-filter" data-priority="medium">
-            Media
-          </button>
+            <button type="submit" class="btn-primary">Añadir tarea</button>
+          </form>
+        </section>
 
-          <button type="button" class="priority-filter" data-priority="low">
-            Baja
-          </button>
-        </div>
+  <section class="task-section">
+    <h2>Tareas de hoy</h2>
 
-        <!-- FILTRO POR CATEGORÍAS (DINÁMICO) -->
-        <div id="category-menu" class="category-menu">
-          <!-- JS inyecta aquí las categorías -->
-        </div>
+    <ul class="task-list" id="task-list">
+      <!-- Las tareas se agregarán aquí dinámicamente -->
+       
+      <li class="task"> <!-- TAREA 1 -->
+              <!-- checkbox oculto que controla el estado -->
+              <input type="checkbox" id="task-1" class="task-toggle" />
 
-      </div>
+              <!-- la tarjeta completa es un label: click en cualquier parte cambia el estado -->
+              <label for="task-1" class="task-item">
+                <div class="task-main">
+                  <div class="task-title-row">
+                    <h3 class="task-title">Comer Helado</h3>
+                    <span class="task-deadline">Cuando apetezca.</span>
+                  </div>
+
+                  <div class="task-meta">
+                    <div class="task-tags">
+                      <span class="task-tag">Alimentación</span>
+                      <span class="task-tag">Salud</span>
+                      <span class="task-tag">Helado</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span class="task-badge priority-high">Alta</span>
+                <button type="button" class="task-delete">Eliminar</button>
+              </label>
+            </li>
+  
+            <li class="task">  <!-- TAREA 2 -->
+              <input type="checkbox" id="task-2" class="task-toggle" />
+              <label for="task-2" class="task-item">
+                <div class="task-main">
+                  <div class="task-title-row">
+                    <h3 class="task-title">Aprender HTML y CSS</h3>
+                    <span class="task-deadline">3 months left.</span>
+                  </div>
+
+                  <div class="task-meta">
+                    <div class="task-tags">
+                      <span class="task-tag">DAM</span>
+                      <span class="task-tag">Prácticas</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span class="task-badge priority-low">Baja</span>
+                <button type="button" class="task-delete">Eliminar</button>
+              </label>
+            </li>                 
+          </ul>
+        </section>
+      </main>
     </div>
-  </section>
+  </div>
 
-  <!-- ============================= -->
-  <!--         LISTA DE TAREAS       -->
-  <!-- ============================= -->
-  <main id="task-area">
-
-    <ul id="task-list" class="task-list">
-
-      <!-- EJEMPLO 1 -->
-      <li class="task">
-        <div class="priority-bar high"></div>
-
-        <label class="task-card">
-
-          <div class="task-content">
-            <div class="task-title-row">
-              <h3 class="task-title">Comer</h3>
-              <span class="task-deadline">14:15</span>
-            </div>
-
-            <div class="task-tags">
-              <span class="tag">salud</span>
-              <span class="tag">Dieta</span>
-              <span class="tag">500kcal</span>
-            </div>
-          </div>
-
-          <button class="btn store-btn">Store</button>
-        </label>
-      </li>
-
-      <!-- EJEMPLO 2 -->
-      <li class="task">
-        <div class="priority-bar medium"></div>
-
-        <label class="task-card">
-          <div class="task-content">
-            <div class="task-title-row">
-              <h3 class="task-title">Comprar hilo coser</h3>
-              <span class="task-deadline">sin prisa</span>
-            </div>
-
-            <div class="task-tags">
-              <span class="tag">casa</span>
-            </div>
-          </div>
-
-          <button class="btn store-btn">Store</button>
-        </label>
-      </li>
-
-      <!-- EJEMPLO 3 -->
-      <li class="task">
-        <div class="priority-bar high"></div>
-
-        <label class="task-card">
-          <div class="task-content">
-            <div class="task-title-row">
-              <h3 class="task-title">2º Entrega TFG</h3>
-              <span class="task-deadline">15/03</span>
-            </div>
-          </div>
-
-          <button class="btn store-btn">Store</button>
-        </label>
-      </li>
-
-    </ul>
-
-  </main>
-
-  <!-- ============================= -->
-  <!--         BOTONES INFERIORES     -->
-  <!-- ============================= -->
-  <footer class="footer-buttons">
-
-    <button id="btn-add" class="btn btn-bottom">+ ADD TASK</button>
-
-    <button id="btn-archive" class="btn btn-bottom">ARCHIVE</button>
-
+  <!-- PIE -->
+  <footer class="app-footer">
+    App UNO - Organización
   </footer>
-
-  <!-- Tu JS actual -->
-  <script src="app.js"></script>
 </body>
 </html>
