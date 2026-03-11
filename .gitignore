@@ -1,0 +1,68 @@
+#   NODE / JAVASCRIPT / WEB PROJECTS
+
+# Dependencias de Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de lock (si no quieres versionarlos)
+package-lock.json
+yarn.lock
+
+# Build / dist
+dist/
+build/
+.tmp/
+.temp/
+
+# Archivos temporales de herramientas
+.eslintcache
+.stylelintcache
+parcel-cache/
+.cache/
+
+#   VISUAL STUDIO CODE
+
+.vscode/
+.history/
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+#   SISTEMA OPERATIVO (Windows / macOS / Linux)
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.nfs*
+
+#   LOGS / TEMP
+
+*.log
+*.tmp
+*.swp
+*.swo
+
+#   ARCHIVOS QUE NO QUEREMOS SUBIR
+
+# Backups
+*.bak
+
+# Archivos ZIP o exportaciones
+*.zip
+*.rar
+
+#   PROYECTOS WEB ESTÁTICOS COMO EL TUYO
+
+# Archivos inútiles o sobrantes
+*.map
