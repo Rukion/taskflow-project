@@ -52,3 +52,111 @@
           <button type="button" class="priority-filter active" data-priority="">
             Todas
           </button>
+          <button type="button" class="priority-filter" data-priority="high">
+            Alta
+          </button>
+          <button type="button" class="priority-filter" data-priority="medium">
+            Media
+          </button>
+          <button type="button" class="priority-filter" data-priority="low">
+            Baja
+          </button>
+        </div>
+
+        <!-- Categorías dinámicas -->
+        <div id="category-menu" class="category-menu"></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ========================================================= -->
+  <!-- LISTA DE TAREAS                                           -->
+  <!-- ========================================================= -->
+  <main id="task-area">
+
+    <ul id="task-list" class="task-list">
+
+      <!-- ================= TAREA DEMO 1 ================= -->
+      <li class="task">
+        <div class="priority-bar high"></div>
+
+        <label class="task-card">
+          <div class="task-content">
+            <div class="task-title-row">
+              <h3 class="task-title">Comer</h3>
+              <span class="task-deadline">14:15</span>
+            </div>
+
+            <div class="task-tags">
+              <span class="tag">salud</span>
+              <span class="tag">Dieta</span>
+              <span class="tag">500kcal</span>
+            </div>
+          </div>
+
+          <button class="store-btn">Store</button>
+        </label>
+      </li>
+
+
+      <!-- ================= TAREA DEMO 2 ================= -->
+      <li class="task">
+        <div class="priority-bar medium"></div>
+
+        <label class="task-card">
+          <div class="task-content">
+            <div class="task-title-row">
+              <h3 class="task-title">Comprar hilo coser</h3>
+              <span class="task-deadline">sin prisa</span>
+            </div>
+
+            <div class="task-tags">
+              <span class="tag">casa</span>
+            </div>
+          </div>
+
+          <button class="store-btn">Store</button>
+        </label>
+      </li>
+
+
+      <!-- ================= TAREA DEMO 3 ================= -->
+      <li class="task">
+        <div class="priority-bar high"></div>
+
+        <label class="task-card">
+          <div class="task-content">
+            <div class="task-title-row">
+              <h3 class="task-title">2º Entrega TFG</h3>
+              <span class="task-deadline">15/03</span>
+            </div>
+          </div>
+
+          <button class="store-btn">Store</button>
+        </label>
+      </li>
+
+    </ul>
+
+  </main>
+
+
+  <!-- ========================================================= -->
+  <!-- BOTONES INFERIORES                                        -->
+  <!-- ========================================================= -->
+  <footer class="footer-buttons">
+
+    <button id="btn-add" class="btn-bottom">+ ADD TASK</button>
+    <button id="btn-archive" class="btn-bottom">ARCHIVE</button>
+
+  </footer>
+
+
+  app.js</script>
+</body>
+</html>
