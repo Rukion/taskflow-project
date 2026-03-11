@@ -165,39 +165,23 @@ body.app-2000 {
   min-height: 70px;
 }
 
-/* ============================================================
-   BARRA DE PRIORIDAD CON DEGRADADO 2000
-   ============================================================ */
-
+/* Barra lateral de prioridad: ahora sin degradado, con borde negro */
 .priority-bar {
   width: 10px;
+  border-right: 2px solid #000;   /* la separa claramente del fondo */
 }
 
+/* Colores planos según prioridad */
 .priority-bar.high {
-  background: linear-gradient(
-    to bottom,
-    #ff2a2a 0%,
-    #ff2a2a40 50%,
-    #4da6a640 100%
-  );
+  background-color: #ff2a2a;      /* rojo alta prioridad */
 }
 
 .priority-bar.medium {
-  background: linear-gradient(
-    to bottom,
-    #ff9900 0%,
-    #ff990040 50%,
-    #4da6a640 100%
-  );
+  background-color: #ff9900;      /* naranja media prioridad */
 }
 
 .priority-bar.low {
-  background: linear-gradient(
-    to bottom,
-    #3ab34a 0%,
-    #3ab34a40 50%,
-    #4da6a640 100%
-  );
+  background-color: #3ab34a;      /* verde baja prioridad */
 }
 
 /* ============================================================
@@ -230,4 +214,86 @@ body.app-2000 {
 
 .task-title {
   margin: 0;
+}
+
+.task {
+  position: relative;
+  background: #fff;
+  overflow: hidden;  /* por si acaso */
+}
+
+/* capa de degradado por prioridad */
+.task.task-high::before,
+.task.task-medium::before,
+.task.task-low::before {
+  content: "";
+  position: absolute;
+  inset: 0;                   /* top:0; right:0; bottom:0; left:0; */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* degradado según prioridad */
+.task.task-high::before {
+  background: linear-gradient(
+    to left,
+    rgba(255, 42, 42, 0.25),
+    rgba(255, 42, 42, 0)
+  );
+}
+.task.task-medium::before {
+  background: linear-gradient(
+    to left,
+    rgba(255, 153, 0, 0.25),
+    rgba(255, 153, 0, 0)
+  );
+}
+.task.task-low::before {
+  background: linear-gradient(
+    to left,
+    rgba(58, 179, 74, 0.25),
+    rgba(58, 179, 74, 0)
+  );
+}
+
+/* aseguramos que el contenido de la tarjeta va por encima del degradado */
+.task > .priority-bar,
+.task > .task-card {
+  position: relative;
+  z-index: 1;
+}
+
+/* Botón "+" principal para añadir tarea rápida */
+#btn-add-quick {
+  background: #007bff;          /* Azul vivo */
+  color: #fff;
+  font-size: 24px;              /* "+" grande */
+  font-weight: bold;
+  border: 2px solid #000;
+  width: 40px;
+  height: 40px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;                   /* quitamos padding extra de .btn */
+}
+
+#btn-add-quick:hover {
+  background: #0056c7;          /* Azul un poco más oscuro al hover */
+}
+
+/* Botón inferior "+ ADD TASK" */
+#btn-add {
+  background: #007bff;
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #000;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#btn-add:hover {
+  background: #0056c7;
 }
