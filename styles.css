@@ -46,3 +46,279 @@ body.app-2000 {
   font-size: 14px;
   padding: 4px 10px;
   min-width: 60px;
+}
+
+.btn:hover {
+  background: #e8e8e8;
+}
+
+.btn:active {
+  background: #d4d4d4;
+}
+
+/* Buscador */
+.search-box {
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+}
+
+.search-icon {
+  padding-left: 4px;
+  font-size: 16px;
+}
+
+
+/* ============================================================
+   PANEL DUAL: PROGRESS <-> FILTER
+   ============================================================ */
+
+.status-section {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  padding: 8px;
+  align-items: stretch;
+}
+
+.status-toggle-btn {
+  border: 2px solid #000;
+  background: #fff;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 90px;
+}
+
+/* Recuadro Progreso/Filtros */
+.status-panel {
+  border: 2px solid #000;
+  padding: 8px;
+  background: #fff;
+}
+
+/* PROGRESS VIEW */
+.status-view {
+  display: block;
+}
+
+.status-view--progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-text {
+  font-size: 14px;
+}
+
+.important-pill {
+  font-size: 14px;
+  color: #d90000;
+  font-weight: bold;
+  padding: 2px 6px;
+  border: 1px solid #000;
+  background: #fff0f0;
+}
+
+/* FILTER VIEW */
+.priority-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.priority-filter {
+  border: 1px solid #000;
+  background: #fff;
+  padding: 2px 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.priority-filter.active {
+  background: #dde7f7;
+  font-weight: bold;
+}
+
+.category-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.category-menu .tag,
+.category-pill {
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 2px 6px;
+  background: #fff;
+  font-size: 11px;
+}
+
+
+/* ============================================================
+   LISTA DE TAREAS
+   ============================================================ */
+
+#task-area {
+  padding: 10px;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Tarjeta de tarea */
+.task {
+  display: flex;
+  border: 2px solid #000;
+  margin-bottom: 10px;
+  background: #fff;
+}
+
+/* Barra de prioridad (izquierda) */
+.priority-bar {
+  width: 8px;
+}
+
+/* Colores estilo efecto2000 */
+.priority-bar.high {
+  background: #ff2a2a; /* rojo */
+}
+
+.priority-bar.medium {
+  background: #ffaa00; /* naranja */
+}
+
+.priority-bar.low {
+  background: #3ab34a; /* verde */
+}
+
+/* Tarjeta interna */
+.task-card {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.task-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.task-title {
+  margin: 0;
+  font-size: 16px;
+}
+
+.task-deadline {
+  font-size: 12px;
+  color: #555;
+}
+
+.task-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.tag {
+  border: 1px solid #000;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Botón STORE en la derecha */
+.store-btn {
+  border: 2px solid #000;
+  background: #fff;
+  padding: 2px 6px;
+  height: fit-content;
+  align-self: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   BOTONES INFERIORES
+   ============================================================ */
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 2px solid #000;
+  background: #f8f8f8;
+}
+
+.btn-bottom {
+  font-size: 14px;
+  padding: 6px 12px;
+  border: 2px solid #000;
+  background: #fff;
+}
+
+
+/* ============================================================
+   FORMULARIO NUEVA TAREA (si lo usas)
+   ============================================================ */
+
+.task-form {
+  border: 2px solid #000;
+  padding: 10px;
+  background: #fff;
+  margin-bottom: 10px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.form-row label {
+  font-size: 12px;
+}
+
+.form-row input,
+.form-row select {
+  border: 2px solid #000;
+  padding: 4px;
+  background: #fff;
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   CHECKBOX oculto (marca completado)
+   ============================================================ */
+
+.task input[type="checkbox"].task-toggle {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Tachado cuando está completada */
+.task input[type="checkbox"].task-toggle:checked + .task-card .task-title {
+  text-decoration: line-through;
+  color: #888;
+}
