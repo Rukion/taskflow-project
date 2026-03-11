@@ -1,192 +1,210 @@
-/* ============================================================
-   ESTILO BASE APP – RETRO + NEUMORFISMO
-============================================================ */
-body.app-2000 {
-  margin: 0;
-  padding: 0;
-  background: #dcdcdc;
-  font-family: "Tahoma", "Verdana", sans-serif;
-  color: #000;
+/* =========================
+   VARIABLES GLOBALES
+   ========================= */
+:root {
+  /* Colores estilo web / foro clásico */
+  --color-bg: #dcdcdc;              /* fondo general gris claro */
+  --color-page: #ffffff;            /* fondo principal blanco */
+  --color-header: #003366;          /* azul cabecera */
+  --color-header-text: #ffffff;
+  --color-sidebar-bg: #f2f2f2;      /* lateral gris claro */
+  --color-border: #cccccc;
+  --color-border-soft: #e5e5e5;
+  --color-primary: #336699;
+  --color-link: #003399;
+  --color-text: #000000;
+  --color-text-muted: #555555;
+
+  --color-tag-bg: #eef4ff;
+  --color-tag-border: #c8d4f5;
+
+  --priority-high: #cc0000;
+  --priority-medium: #cc9900;
+  --priority-low: #009933;
+
+  /* Espaciados y bordes */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+
+  /* Tipografía */
+  --font-family: "Verdana", "Tahoma", system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-size-base: 14px;
 }
 
-* {
+/* =========================
+   ESTILOS GENERALES
+   ========================= */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-.hidden {
-  display: none !important;
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
-/* ============================================================
-   TOP BAR
-============================================================ */
-.topbar {
+/* Contenedor principal tipo foro */
+.page-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: var(--color-page);
+  border: 1px solid var(--color-border);
+  border-top: none;
+  min-height: 100vh;
+}
+
+/* =========================
+   CABECERA
+   ========================= */
+.app-header {
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: var(--color-header);
+  color: var(--color-header-text);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid #002244;
+  border-bottom: none;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.app-header .subtitle {
+  margin: var(--space-xs) 0 0;
+  font-size: 11px;
+}
+
+/* =========================
+   LAYOUT PRINCIPAL
+   ========================= */
+.layout {
   display: grid;
-  grid-template-columns: auto auto auto 1fr;
-  gap: 6px;
-  padding: 8px;
-  border-bottom: 2px solid #000;
-  background: #efefef;
-  box-shadow: inset 2px 2px 3px #ffffff, inset -2px -2px 3px #b8b8b8;
+  grid-template-columns: 1fr 2.5fr; /* aside más estrecho, main más ancho */
+  gap: var(--space-lg);
+  padding: var(--space-lg);
 }
 
-/* Botones retro */
-.btn {
-  border: 2px solid #000;
-  background: #fafafa;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 4px 10px;
-  min-width: 60px;
-
-  /* neumorfismo sutil */
-  box-shadow:
-    3px 3px 3px rgba(0,0,0,0.25),
-    -2px -2px 3px rgba(255,255,255,0.9);
+/* MAIN */
+main {
+  border: 1px solid var(--color-border);
+  padding: var(--space-md);
+  background-color: var(--color-page);
 }
 
-.btn:hover {
-  background: #e1e1e1;
+.task-section + .task-section {
+  margin-top: var(--space-lg);
 }
 
-/* Botón grande + */
-#btn-add-quick {
-  background: #4b8cff;
-  color: #fff;
-  border-radius: 6px;
-  font-size: 26px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow:
-    3px 3px 6px rgba(0,0,0,0.3),
-    -3px -3px 6px rgba(255,255,255,0.8);
+.task-section h2 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--color-border-soft);
+  padding-bottom: var(--space-xs);
+  font-size: 16px;
 }
 
-#btn-add-quick:hover {
-  background: #2f6ee2;
+/* =========================
+   SIDEBAR
+   ========================= */
+.sidebar {
+  border: 1px solid var(--color-border);
+  padding: var(--space-md);
+  background-color: var(--color-sidebar-bg);
 }
 
 /* Buscador */
-.search-box {
-  border: 2px solid #000;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  padding: 0 6px;
-
-  box-shadow:
-    inset 2px 2px 3px #cfcfcf,
-    inset -2px -2px 3px #ffffff;
+.field-label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: var(--space-xs);
 }
 
-.search-box input {
-  border: none;
-  outline: none;
-  flex: 1;
-  font-size: 14px;
-  background: transparent;
+.search-input {
+  width: 100%;
+  padding: 3px 4px;
+  font-size: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
 }
 
-/* ============================================================
-   PANEL PROGRESS / FILTERS
-============================================================ */
-.status-section {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 6px;
-  padding: 10px;
+/* Menú */
+.menu-section {
+  margin-top: var(--space-lg);
 }
 
-.status-toggle-btn {
-  border: 2px solid #000;
-  background: #fafafa;
-  cursor: pointer;
-  padding: 5px 10px;
-  font-size: 14px;
-
-  box-shadow:
-    3px 3px 3px rgba(0,0,0,0.25),
-    -2px -2px 3px rgba(255,255,255,0.9);
-}
-
-.status-panel {
-  border: 2px solid #000;
-  background: #ffffff;
-  padding: 12px;
-
-  box-shadow:
-    inset 2px 2px 4px #cdcdcd,
-    inset -2px -2px 4px #ffffff;
-}
-
-.status-view--progress {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.important-pill {
-  padding: 3px 8px;
-  border: 2px solid #d00000;
-  background: #ffe1e1;
+.menu-title {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: 12px;
   font-weight: bold;
-  color: #b00000;
-
-  box-shadow:
-    inset 1px 1px 2px #ffffff,
-    inset -2px -2px 3px #d4d4d4;
 }
 
-/* ============================================================
-   FILTROS
-============================================================ */
-.priority-menu {
+
+/* Contenedor de categorías: fila con wrap */
+.category-menu {
   display: flex;
-  gap: 6px;
+  flex-wrap: wrap;        /* 🔥 aquí está la magia del salto de línea */
+  gap: 4px;               /* espacio horizontal/vertical entre globos */
+}
+
+/* Cada categoría como “píldora” compacta */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 999px;   /* forma de pastilla */
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  color: var(--color-text);
+  cursor: default;        /* de momento solo informativo */
+  white-space: nowrap;    /* que no rompa la palabra dentro */
+}
+
+.category-pill:hover {
+  border-color: var(--color-primary);
+}
+
+.priority-menu { /* MENÚ DE PRIORIDADES */
+  display: flex;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  gap: 4px;
 }
 
 .priority-filter {
-  padding: 3px 8px;
-  border: 2px solid #000;
-  background: #fff;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  color: var(--color-text);
   cursor: pointer;
-  font-size: 12px;
+}
 
-  box-shadow:
-    2px 2px 2px rgba(0,0,0,0.25),
-    -1px -1px 2px rgba(255,255,255,0.9);
+.priority-filter:hover {
+  border-color: var(--color-primary);
 }
 
 .priority-filter.active {
-  background: #cde6ff;
+  background-color: #dde7f7;
+  border-color: var(--color-primary);
   font-weight: bold;
 }
 
-.category-menu .category-pill {
-  border: 1px solid #000;
-  background: #fff;
-  border-radius: 12px;
-  padding: 4px 8px;
-  font-size: 11px;
 
-  box-shadow:
-    2px 2px 3px rgba(0,0,0,0.25),
-    -2px -2px 3px rgba(255,255,255,0.9);
-}
-
-/* ============================================================
-   LISTA DE TAREAS
-============================================================ */
-#task-area {
-  padding: 12px;
-}
+/* =========================
+   LISTA DE TAREAS (FLEX)
+   ========================= */
 
 .task-list {
   list-style: none;
@@ -194,154 +212,228 @@ body.app-2000 {
   padding: 0;
 }
 
-/* ============================================================
-   TARJETAS CON NEUMORFISMO RETRO
-============================================================ */
+/* Cada li envuelve checkbox + tarjeta */
 .task {
-  position: relative;
-  display: flex;
-  border: 1px solid #9d9d9d;
-  border-radius: 8px;
-  min-height: 75px;
-  margin-bottom: 15px;
-  overflow: hidden;
-  background: #e6e6e6;
-
-  /* SOMBRA NEUMÓRFICA */
-  box-shadow:
-    6px 6px 10px rgba(0,0,0,0.25),
-    -5px -5px 10px rgba(255,255,255,0.9);
+  margin-bottom: var(--space-sm);
 }
 
-/* Degradado según prioridad: la capa ya la gestiona JS con ::before */
-.task-high::before,
-.task-medium::before,
-.task-low::before {
-  content: "";
+/* Checkbox oculto: controla el estado de la tarjeta */
+.task-toggle {
   position: absolute;
-  inset: 0;
-  z-index: 0;
+  opacity: 0;
   pointer-events: none;
 }
 
-.task-high::before {
-  background: linear-gradient(
-    to left,
-    rgba(255, 42, 42, 0.25),
-    transparent
-  );
-}
-
-.task-medium::before {
-  background: linear-gradient(
-    to left,
-    rgba(255, 153, 0, 0.25),
-    transparent
-  );
-}
-
-.task-low::before {
-  background: linear-gradient(
-    to left,
-    rgba(58, 179, 74, 0.25),
-    transparent
-  );
-}
-
-/* Barra lateral de prioridad */
-.priority-bar {
-  width: 10px;
-  border-right: 1px solid #000;
-}
-
-.priority-bar.high { background: #ff2a2a; }
-.priority-bar.medium { background: #ff9900; }
-.priority-bar.low { background: #3ab34a; }
-
-/* TARJETA INTERIOR */
-.task-card {
-  display: flex;
+/* Tarjeta de tarea. Es un <label>, flex para maquetar contenido y prioridad */
+.task-item {
+  display: flex; /* FLEX: requisito de la práctica */
+  align-items: center;
   justify-content: space-between;
-  flex: 1;
-  padding: 14px;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  background-color: #fdfdfd;
   cursor: pointer;
-  position: relative;
-  z-index: 1;
+  gap: var(--space-md);
+
+  /* ⭐ Transición suave (BONUS) */
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease;
 }
 
-.task-content {
+/* Separador sutil estilo tabla/foro */
+.task + .task .task-item {
+  border-top: 1px solid var(--color-border);
+}
+
+/* Hover clásico */
+.task-item:hover {
+  background-color: #f5f5ff;
+  border-color: var(--color-primary);
+}
+
+/* Columna izquierda: título, tags, categoría */
+.task-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-xs);
 }
 
+/* Fila título + cuenta atrás */
 .task-title-row {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  align-items: center;
+  gap: var(--space-md);
 }
 
 .task-title {
   margin: 0;
+  font-size: 13px;
 }
 
-.tag {
-  background: #fff;
-  border: 1px solid #000;
-  padding: 2px 6px;
-  border-radius: 6px;
-
-  box-shadow:
-    1px 1px 2px rgba(0,0,0,0.25),
-    -1px -1px 2px rgba(255,255,255,0.8);
+.task-deadline {
+  font-size: 11px;
+  color: var(--color-text-muted);
 }
 
-/* Store button */
-.store-btn {
-  background: #f5f5f5;
-  border: 1px solid #000;
-  padding: 6px 10px;
-  height: fit-content;
-  margin-left: 10px;
-
-  box-shadow:
-    2px 2px 4px rgba(0,0,0,0.25),
-    -2px -2px 4px rgba(255,255,255,0.85);
-}
-
-.store-btn:hover {
-  background: #e0e0e0;
-}
-
-/* ============================================================
-   FOOTER
-============================================================ */
-.footer-buttons {
+/* Categorías como globos */
+.task-tags {
   display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  gap: 8px;
-  border-top: 2px solid #000;
-  background: #efefef;
-
-  box-shadow:
-    inset 2px 2px 3px #ffffff,
-    inset -2px -2px 3px #b8b8b8;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: var(--space-xs);
 }
 
-.btn-bottom {
-  flex: 1;
-  background: #4b8cff;
-  color: #fff;
-  border: 2px solid #000;
-  padding: 8px;
-  font-weight: bold;
-
-  box-shadow:
-    4px 4px 6px rgba(0,0,0,0.3),
-    -3px -3px 6px rgba(255,255,255,0.8);
+.task-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 999px;
+  background-color: var(--color-tag-bg);
+  border: 1px solid var(--color-tag-border);
 }
 
-.btn-bottom:hover {
-  background: #2f6ee2;
+/* BADGE de prioridad a la derecha */
+.task-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  white-space: nowrap;
+}
+
+.priority-high {
+  border-color: var(--priority-high);
+  color: var(--priority-high);
+}
+
+.priority-medium {
+  border-color: var(--priority-medium);
+  color: var(--priority-medium);
+}
+
+.priority-low {
+  border-color: var(--priority-low);
+  color: var(--priority-low);
+}
+
+/* =========================
+   ESTADO COMPLETADO (BONUS)
+   ========================= */
+/* Cuando el checkbox está marcado, la tarjeta cambia suavemente */
+.task-toggle:checked + .task-item {
+  background-color: #f1f1f1;
+  border-color: var(--color-border-soft);
+  opacity: 0.7;
+}
+
+.task-toggle:checked + .task-item .task-title {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+.app-footer {
+  max-width: 960px;
+  margin: 0 auto;
+  border: 1px solid var(--color-border);
+  border-top: none;
+  padding: var(--space-sm) var(--space-lg);
+  background-color: #f5f5f5;
+  font-size: 11px;
+  text-align: right;
+  color: var(--color-text-muted);
+}
+
+/* =========================
+   MEDIA QUERY (MÓVIL)
+   ========================= */
+@media (max-width: 768px) {
+  .layout {
+    display: flex;
+    flex-direction: column; /* aside encima del main en móvil */
+    padding: var(--space-md);
+  }
+
+  .sidebar {
+    margin-bottom: var(--space-md);
+  }
+
+  .task-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .task-badge {
+    align-self: flex-end;
+  }
+
+  .task-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ====== FORMULARIO DE NUEVA TAREA ====== */
+
+.task-form {
+  border: 1px solid var(--color-border);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+  background-color: #f9f9f9;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-sm);
+}
+
+.form-row label {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.form-row input,
+.form-row select {
+  font-size: 12px;
+  padding: 3px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.btn-primary {
+  margin-top: var(--space-sm);
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-primary);
+  background-color: #dde7f7;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #c5d6f0;
+}
+
+/* Botón de eliminar tarea */
+.task-delete {
+  margin-left: var(--space-sm);
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.task-delete:hover {
+  border-color: var(--priority-high);
+  color: var(--priority-high);
 }

@@ -5,18 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>App UNO - efecto2000</title>
 
+  <!-- Tu CSS habitual -->
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body class="app-2000">
 
-  <!-- ========================================================= -->
-  <!-- TOP BAR Windows 2000 -->
-  <!-- ========================================================= -->
+  <!-- ============================= -->
+  <!--       TOP BAR (mockup)        -->
+  <!-- ============================= -->
   <header class="topbar">
 
-    <button class="btn" id="btn-add-quick">+</button>
-    <button class="btn" id="btn-3day">3 day</button>
-    <button class="btn" id="btn-38week">38 week</button>
+    <button class="btn btn-top" id="btn-add-quick">+</button>
+
+    <button class="btn btn-top" id="btn-3day">3 day</button>
+
+    <button class="btn btn-top" id="btn-38week">38 week</button>
 
     <div class="search-box">
       <input type="text" id="search" placeholder="Search…" />
@@ -25,58 +29,67 @@
 
   </header>
 
-
-  <!-- ========================================================= -->
-  <!-- PANEL: PROGRESS ↔ FILTER -->
-  <!-- ========================================================= -->
+  <!-- ========================================================== -->
+  <!-- PANEL DUAL: PROGRESS <-> FILTER (según tu diseño exacto)   -->
+  <!-- ========================================================== -->
   <section class="status-section">
 
-    <!-- Toggle -->
+    <!-- Botón que intercambia modos -->
     <button id="status-toggle" class="status-toggle-btn">Filter</button>
 
-    <!-- Panel -->
+    <!-- Recuadro que cambia su contenido -->
     <div class="status-panel">
 
-      <!-- Progress -->
-      <div id="status-view-progress" class="status-view status-view--progress">
+      <!-- Vista 1: PROGRESS -->
+      <div id="status-view-progress" class="status-view">
         <span class="progress-text">Progress: 6/14</span>
         <span class="important-pill">2 IMPORTANT</span>
       </div>
 
-      <!-- Filters -->
+      <!-- Vista 2: FILTERS (escondida por defecto) -->
       <div id="status-view-filters" class="status-view hidden">
 
-        <!-- Prioridad -->
+        <!-- FILTRO POR PRIORIDAD -->
         <div class="priority-menu">
-          <button type="button" class="priority-filter active" data-priority="">Todas</button>
-          <button type="button" class="priority-filter" data-priority="high">Alta</button>
-          <button type="button" class="priority-filter" data-priority="medium">Media</button>
-          <button type="button" class="priority-filter" data-priority="low">Baja</button>
+          <button type="button" class="priority-filter active" data-priority="">
+            Todas
+          </button>
+
+          <button type="button" class="priority-filter" data-priority="high">
+            Alta
+          </button>
+
+          <button type="button" class="priority-filter" data-priority="medium">
+            Media
+          </button>
+
+          <button type="button" class="priority-filter" data-priority="low">
+            Baja
+          </button>
         </div>
 
-        <!-- Categorías -->
-        <div id="category-menu" class="category-menu"></div>
+        <!-- FILTRO POR CATEGORÍAS (DINÁMICO) -->
+        <div id="category-menu" class="category-menu">
+          <!-- JS inyecta aquí las categorías -->
+        </div>
 
       </div>
-
     </div>
-
   </section>
 
-
-
-  <!-- ========================================================= -->
-  <!-- LISTA DE TAREAS -->
-  <!-- ========================================================= -->
+  <!-- ============================= -->
+  <!--         LISTA DE TAREAS       -->
+  <!-- ============================= -->
   <main id="task-area">
 
     <ul id="task-list" class="task-list">
 
-      <!-- DEMO 1 -->
+      <!-- EJEMPLO 1 -->
       <li class="task">
         <div class="priority-bar high"></div>
 
         <label class="task-card">
+
           <div class="task-content">
             <div class="task-title-row">
               <h3 class="task-title">Comer</h3>
@@ -90,11 +103,11 @@
             </div>
           </div>
 
-          <button class="store-btn">Store</button>
+          <button class="btn store-btn">Store</button>
         </label>
       </li>
 
-      <!-- DEMO 2 -->
+      <!-- EJEMPLO 2 -->
       <li class="task">
         <div class="priority-bar medium"></div>
 
@@ -110,11 +123,11 @@
             </div>
           </div>
 
-          <button class="store-btn">Store</button>
+          <button class="btn store-btn">Store</button>
         </label>
       </li>
 
-      <!-- DEMO 3 -->
+      <!-- EJEMPLO 3 -->
       <li class="task">
         <div class="priority-bar high"></div>
 
@@ -126,7 +139,7 @@
             </div>
           </div>
 
-          <button class="store-btn">Store</button>
+          <button class="btn store-btn">Store</button>
         </label>
       </li>
 
@@ -134,17 +147,18 @@
 
   </main>
 
-
-
-  <!-- ========================================================= -->
-  <!-- BOTONES INFERIORES -->
-  <!-- ========================================================= -->
+  <!-- ============================= -->
+  <!--         BOTONES INFERIORES     -->
+  <!-- ============================= -->
   <footer class="footer-buttons">
-    <button id="btn-add" class="btn-bottom">+ ADD TASK</button>
-    <button id="btn-archive" class="btn-bottom">ARCHIVE</button>
+
+    <button id="btn-add" class="btn btn-bottom">+ ADD TASK</button>
+
+    <button id="btn-archive" class="btn btn-bottom">ARCHIVE</button>
+
   </footer>
 
-
-  app.js</script>
+  <!-- Tu JS actual -->
+  <script src="app.js"></script>
 </body>
 </html>
