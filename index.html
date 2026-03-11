@@ -5,21 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>App UNO - efecto2000</title>
 
-  <!-- Tu CSS habitual -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body class="app-2000">
 
   <!-- ============================= -->
-  <!--       TOP BAR (mockup)        -->
+  <!-- TOP BAR -->
   <!-- ============================= -->
   <header class="topbar">
 
     <button class="btn btn-top" id="btn-add-quick">+</button>
-
     <button class="btn btn-top" id="btn-3day">3 day</button>
-
     <button class="btn btn-top" id="btn-38week">38 week</button>
 
     <div class="search-box">
@@ -29,65 +26,57 @@
 
   </header>
 
-  <!-- ========================================================== -->
-  <!-- PANEL DUAL: PROGRESS <-> FILTER (según tu diseño exacto)   -->
-  <!-- ========================================================== -->
+
+  <!-- ============================= -->
+  <!-- PANEL DUAL: PROGRESS / FILTER -->
+  <!-- ============================= -->
   <section class="status-section">
 
-    <!-- Botón que intercambia modos -->
     <button id="status-toggle" class="status-toggle-btn">Filter</button>
 
-    <!-- Recuadro que cambia su contenido -->
     <div class="status-panel">
 
-      <!-- Vista 1: PROGRESS -->
-      <div id="status-view-progress" class="status-view">
+      <!-- VISTA PROGRESS -->
+      <div id="status-view-progress" class="status-view status-view--progress">
         <span class="progress-text">Progress: 6/14</span>
         <span class="important-pill">2 IMPORTANT</span>
       </div>
 
-      <!-- Vista 2: FILTERS (escondida por defecto) -->
+      <!-- VISTA FILTER -->
       <div id="status-view-filters" class="status-view hidden">
 
-        <!-- FILTRO POR PRIORIDAD -->
         <div class="priority-menu">
           <button type="button" class="priority-filter active" data-priority="">
             Todas
           </button>
-
           <button type="button" class="priority-filter" data-priority="high">
             Alta
           </button>
-
           <button type="button" class="priority-filter" data-priority="medium">
             Media
           </button>
-
           <button type="button" class="priority-filter" data-priority="low">
             Baja
           </button>
         </div>
 
-        <!-- FILTRO POR CATEGORÍAS (DINÁMICO) -->
-        <div id="category-menu" class="category-menu">
-          <!-- JS inyecta aquí las categorías -->
-        </div>
+        <div id="category-menu" class="category-menu"></div>
 
       </div>
+
     </div>
   </section>
 
+
   <!-- ============================= -->
-  <!--         LISTA DE TAREAS       -->
+  <!-- LISTA DE TAREAS -->
   <!-- ============================= -->
   <main id="task-area">
 
     <ul id="task-list" class="task-list">
 
-      <!-- EJEMPLO 1 -->
       <li class="task">
         <div class="priority-bar high"></div>
-
         <label class="task-card">
 
           <div class="task-content">
@@ -107,10 +96,8 @@
         </label>
       </li>
 
-      <!-- EJEMPLO 2 -->
       <li class="task">
         <div class="priority-bar medium"></div>
-
         <label class="task-card">
           <div class="task-content">
             <div class="task-title-row">
@@ -122,15 +109,12 @@
               <span class="tag">casa</span>
             </div>
           </div>
-
           <button class="btn store-btn">Store</button>
         </label>
       </li>
 
-      <!-- EJEMPLO 3 -->
       <li class="task">
         <div class="priority-bar high"></div>
-
         <label class="task-card">
           <div class="task-content">
             <div class="task-title-row">
@@ -138,7 +122,6 @@
               <span class="task-deadline">15/03</span>
             </div>
           </div>
-
           <button class="btn store-btn">Store</button>
         </label>
       </li>
@@ -147,18 +130,17 @@
 
   </main>
 
+
   <!-- ============================= -->
-  <!--         BOTONES INFERIORES     -->
+  <!-- BOTONES INFERIORES -->
   <!-- ============================= -->
   <footer class="footer-buttons">
 
     <button id="btn-add" class="btn btn-bottom">+ ADD TASK</button>
-
     <button id="btn-archive" class="btn btn-bottom">ARCHIVE</button>
 
   </footer>
 
-  <!-- Tu JS actual -->
   <script src="app.js"></script>
 </body>
 </html>
