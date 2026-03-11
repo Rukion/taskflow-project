@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let activePriorityFilter = ""; // --- estado del filtro de prioridad y de búsqueda ---
   let activeSearchQuery = "";
 
+  //Linea de test para practicar flujo de git desde terminal :)
+
 
   // ================================
   //  2. REFERENCIAS AL DOM
