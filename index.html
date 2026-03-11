@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>App UNO - efecto2000</title>
 
-  styles.css
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body class="app-2000">
 
   <!-- ========================================================= -->
-  <!-- TOP BAR - ESTILO WINDOWS 98 / 2000                       -->
+  <!-- TOP BAR Windows 2000 -->
   <!-- ========================================================= -->
   <header class="topbar">
 
@@ -28,42 +27,34 @@
 
 
   <!-- ========================================================= -->
-  <!-- PANEL: PROGRESS ↔ FILTER                                 -->
+  <!-- PANEL: PROGRESS ↔ FILTER -->
   <!-- ========================================================= -->
   <section class="status-section">
 
-    <!-- Botón que alterna entre PROGRESS / FILTER -->
+    <!-- Toggle -->
     <button id="status-toggle" class="status-toggle-btn">Filter</button>
 
-    <!-- Recuadro con las dos vistas -->
+    <!-- Panel -->
     <div class="status-panel">
 
-      <!-- Vista PROGRESS -->
+      <!-- Progress -->
       <div id="status-view-progress" class="status-view status-view--progress">
         <span class="progress-text">Progress: 6/14</span>
         <span class="important-pill">2 IMPORTANT</span>
       </div>
 
-      <!-- Vista FILTER -->
+      <!-- Filters -->
       <div id="status-view-filters" class="status-view hidden">
 
-        <!-- Filtro por prioridad -->
+        <!-- Prioridad -->
         <div class="priority-menu">
-          <button type="button" class="priority-filter active" data-priority="">
-            Todas
-          </button>
-          <button type="button" class="priority-filter" data-priority="high">
-            Alta
-          </button>
-          <button type="button" class="priority-filter" data-priority="medium">
-            Media
-          </button>
-          <button type="button" class="priority-filter" data-priority="low">
-            Baja
-          </button>
+          <button type="button" class="priority-filter active" data-priority="">Todas</button>
+          <button type="button" class="priority-filter" data-priority="high">Alta</button>
+          <button type="button" class="priority-filter" data-priority="medium">Media</button>
+          <button type="button" class="priority-filter" data-priority="low">Baja</button>
         </div>
 
-        <!-- Categorías dinámicas -->
+        <!-- Categorías -->
         <div id="category-menu" class="category-menu"></div>
 
       </div>
@@ -75,13 +66,13 @@
 
 
   <!-- ========================================================= -->
-  <!-- LISTA DE TAREAS                                           -->
+  <!-- LISTA DE TAREAS -->
   <!-- ========================================================= -->
   <main id="task-area">
 
     <ul id="task-list" class="task-list">
 
-      <!-- ================= TAREA DEMO 1 ================= -->
+      <!-- DEMO 1 -->
       <li class="task">
         <div class="priority-bar high"></div>
 
@@ -103,8 +94,7 @@
         </label>
       </li>
 
-
-      <!-- ================= TAREA DEMO 2 ================= -->
+      <!-- DEMO 2 -->
       <li class="task">
         <div class="priority-bar medium"></div>
 
@@ -124,8 +114,7 @@
         </label>
       </li>
 
-
-      <!-- ================= TAREA DEMO 3 ================= -->
+      <!-- DEMO 3 -->
       <li class="task">
         <div class="priority-bar high"></div>
 
@@ -146,14 +135,13 @@
   </main>
 
 
+
   <!-- ========================================================= -->
-  <!-- BOTONES INFERIORES                                        -->
+  <!-- BOTONES INFERIORES -->
   <!-- ========================================================= -->
   <footer class="footer-buttons">
-
     <button id="btn-add" class="btn-bottom">+ ADD TASK</button>
     <button id="btn-archive" class="btn-bottom">ARCHIVE</button>
-
   </footer>
 
 
