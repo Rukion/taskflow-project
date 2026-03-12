@@ -442,6 +442,22 @@ main {
   }
 }
 
+@media (max-width: 768px) { /* 📱 En móvil, el sidebar pasa abajo del contenido */
+  .layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    order: 2;
+  }
+
+  main {
+    order: 1;
+  }
+}
+
+
 /* ====== FORMULARIO DE NUEVA TAREA ====== */
 .task-form {
   border: 1px solid var(--color-border);
@@ -509,4 +525,78 @@ main {
 
 .stats-list li {
   margin-bottom: 2px;
+}
+
+/* ---------- COLAPSABLE ---------- */
+
+.collapsible-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.collapsible-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.2s ease;
+  max-height: none; /* PC por defecto */
+}
+
+/* 📱 En móvil: arrancar colapsado */
+@media (max-width: 768px) {
+
+  .collapsible-content {
+    max-height: 0;
+    padding: 0;
+  }
+
+  .collapsible-content.open {
+    max-height: 1000px; /* suficientemente grande */
+    padding: var(--space-md) 0;
+  }
+}
+
+/* ============================
+   BUSCADOR SUPERIOR FIJO
+============================ */
+
+.top-searchbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #f2f2f2;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.search-icon {
+  font-size: 16px;
+}
+
+.top-search-input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+/* PC: buscador más estrecho, alineado a la izquierda */
+@media (min-width: 769px) {
+  .top-searchbar {
+    max-width: 260px;          /* lo dejamos como ancho tipo sidebar */
+    margin-bottom: 12px;
+  }
+}
+
+/* MÓVIL: buscador a pantalla completa */
+@media (max-width: 768px) {
+  .top-searchbar {
+    position: sticky;          /* queda pegado arriba al hacer scroll */
+    top: 0;
+    z-index: 20;
+    width: 100%;
+  }
+
+  .top-search-input {
+    font-size: 16px;           /* evitar zoom del móvil */
+  }
 }

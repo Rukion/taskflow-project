@@ -19,20 +19,21 @@
   </header>
 
   <!-- CONTENEDOR TIPO FORO -->
-  <div class="page-wrapper">
+  <div class="page-wrapper">    
+    
+    <div class="top-searchbar"> <!-- BUSCADOR GLOBAL FIJO ARRIBA -->
+      <span class="search-icon">🔎</span>
+      <input 
+        id="search"
+        type="text"
+        class="top-search-input"
+        placeholder="Buscar..."
+      />
+    </div>
+
     <div class="layout">
       <!-- BARRA LATERAL -->
       <aside class="sidebar">
-        <section class="search-section"> <!-- BUSCADOR -->
-          <label for="search" class="field-label">Buscar:</label>
-          <input
-            id="search"
-            type="text"
-            class="search-input"
-            placeholder="(ej. 'sorbete de frambuesa')"
-          />
-        </section>      
-
         <section class="menu-section"> <!-- NUEVO MENÚ DE CATEGORÍAS -->
           <p class="menu-title">CATEGORÍAS:</p>
           <div id="category-menu" class="category-menu">
@@ -60,11 +61,11 @@
 
       <!-- CONTENIDO PRINCIPAL -->
       <main>
-        <section class="task-section">
-          <h2>Nueva tarea</h2>
+        <section class="task-section collapsible-section">
+          <h2 class="collapsible-header">Nueva tarea ▾</h2>
+          <div class="collapsible-content">
+            <form id="task-form" class="task-form">
 
-          <form id="task-form" class="task-form">
-            <div class="form-row">
               <label for="task-title">Título:</label>
               <input
                 type="text"

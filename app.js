@@ -21,6 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsTotal = document.getElementById("stats-total"); // 3 REFERENCIAS PARA ESTADÍSTICAS
   const statsCompleted = document.getElementById("stats-completed");
   const statsPending = document.getElementById("stats-pending");
+  const collapsibleHeader = document.querySelector(".collapsible-header"); // "Nueva Tarea" COLAPSABLE
+  const collapsibleContent = document.querySelector(".collapsible-content");
+
+  if (collapsibleHeader && collapsibleContent) {
+    collapsibleHeader.addEventListener("click", () => {
+      collapsibleContent.classList.toggle("open");
+
+      // Cambiamos el icono ▾ / ▸
+      if (collapsibleContent.classList.contains("open")) {
+        collapsibleHeader.textContent = "Nueva tarea ▾";
+      } else {
+        collapsibleHeader.textContent = "Nueva tarea ▸";
+      }
+    });
+  }
 
           // Delegación de eventos para eliminar tareas (funciona para tareas viejas y nuevas)
         taskList.addEventListener("click", (event) => {
