@@ -224,24 +224,47 @@ main {
   pointer-events: none;
 }
 
-/* Tarjeta de tarea. Es un <label>, flex para maquetar contenido y prioridad */
+
+/* Tarjeta de tarea: contenedor principal */
 .task-item {
-  display: flex; /* FLEX: requisito de la práctica */
-  align-items: center;
-  justify-content: space-between;
+  display: flex; /* ya lo tenías como flex */
+  align-items: flex-start;
+  justify-content: space-between; /* contenido a la izquierda, acciones a la derecha */
   padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--color-border);
   background-color: #fdfdfd;
   cursor: pointer;
   gap: var(--space-md);
-
-  /* ⭐ Transición suave (BONUS) */
-  transition:
+  transition: /* transiciones suaves para hover y estado completado */
     background-color 0.25s ease,
     border-color 0.25s ease,
     opacity 0.25s ease;
 }
 
+/* columna izquierda */
+.task-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+/* título + deadline en la misma fila */
+.task-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+/* columna derecha: badge + botón */
+.task-side {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px; /* separación entre badge y botón */
+} 
+ 
 /* Separador sutil estilo tabla/foro */
 .task + .task .task-item {
   border-top: 1px solid var(--color-border);
@@ -351,9 +374,7 @@ main {
   color: var(--color-text-muted);
 }
 
-/* =========================
-   MEDIA QUERY (MÓVIL)
-   ========================= */
+/* MEDIA QUERY (MÓVIL) */
 @media (max-width: 768px) {
   .layout {
     display: flex;
@@ -380,8 +401,48 @@ main {
   }
 }
 
-/* ====== FORMULARIO DE NUEVA TAREA ====== */
+@media (max-width: 480px) { /* Versión móvil más compacta */
+  .task-item {
+    padding: 8px 10px;
+    gap: 8px;
+  }
 
+  .task-title {
+    font-size: 14px;
+  }
+
+  .task-deadline {
+    font-size: 12px;
+  }
+
+  .task-tag,
+  .task-badge,
+  .task-delete {
+    font-size: 12px;
+  }
+
+    .task-item { /* badge y botón se colocan arriba a la derecha */
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .task-side {
+    align-self: flex-end;
+  }
+  
+  input, /* Importante: evitar zoom forzado en inputs/botones */
+  select,
+  button {
+    font-size: 16px; /* mínimo 16px en móvil */
+  }
+}
+
+/* ====== FORMULARIO DE NUEVA TAREA ====== */
 .task-form {
   border: 1px solid var(--color-border);
   padding: var(--space-md);
@@ -436,4 +497,16 @@ main {
 .task-delete:hover {
   border-color: var(--priority-high);
   color: var(--priority-high);
+}
+
+/* ====== ESTADÍSTICAS ====== */
+.stats-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  font-size: 12px;
+}
+
+.stats-list li {
+  margin-bottom: 2px;
 }

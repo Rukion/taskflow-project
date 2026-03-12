@@ -7,11 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let tasks = [];  
   let activePriorityFilter = ""; // --- estado del filtro de prioridad y de búsqueda ---
   let activeSearchQuery = "";
-
-
-  // ================================
+  
   //  2. REFERENCIAS AL DOM
-  // ================================
   const form = document.getElementById("task-form");
   const titleInput = document.getElementById("task-title");
   const tagsInput = document.getElementById("task-tags");
@@ -21,8 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("search");
   const categoryMenu = document.getElementById("category-menu");
   const priorityMenu = document.getElementById("priority-menu");
-  
-        // Delegación de eventos para eliminar tareas (funciona para tareas viejas y nuevas)
+  const statsTotal = document.getElementById("stats-total"); // 3 REFERENCIAS PARA ESTADÍSTICAS
+  const statsCompleted = document.getElementById("stats-completed");
+  const statsPending = document.getElementById("stats-pending");
+
+          // Delegación de eventos para eliminar tareas (funciona para tareas viejas y nuevas)
         taskList.addEventListener("click", (event) => {
           // ¿Se ha hecho clic sobre un botón de eliminar o dentro de él?
           const deleteButton = event.target.closest(".task-delete");
@@ -45,25 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
             tasks = tasks.filter((t) => t.id !== taskId);
             saveTasks();
           }
-
-          // Borramos del DOM
-          li.remove();
-
-          // actualizar menú de categorías
-          updateCategoryMenu();
-
+          
+          li.remove(); // Borramos del DOM
+          
+          updateCategoryMenu(); // actualizar menú de categorías
+          updateStats() // actualizar estadísticas 
         });
-
 
   if (!form || !taskList) {
     console.warn("Falta el formulario o la lista de tareas en el HTML.");
     return;
-  }
-
-  // ================================
-  //  3. PERSISTENCIA: LOCALSTORAGE
-  // ================================
-  const STORAGE_KEY = "tasks";
+  }  
+  
+  const STORAGE_KEY = "tasks"; //  3. PERSISTENCIA: LOCALSTORAGE
 
   function saveTasks() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
@@ -81,17 +75,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }    
 
       updateCategoryMenu(); // actualizar el menú de categorías al cargar las tareas
+      updateStats();        // actualizar estadísticas al cargar
     
     } catch (error) {
       console.error("Error al leer tareas de localStorage:", error);
       tasks = [];
     }
   }
-  
-// ================================
-//  ACTUALIZAR MENÚ DE CATEGORÍAS
-// ================================
-function updateCategoryMenu() {
+
+function updateCategoryMenu() { //  ACTUALIZAR MENÚ DE CATEGORÍAS
   if (!categoryMenu) return;
 
   // 1) Reunir todas las categorías (tags) en un Set para tener únicas
@@ -126,30 +118,35 @@ function updateCategoryMenu() {
   });
 }
 
-  // ================================
-  //  4. PINTAR TAREA EN EL DOM
-  // ================================
-  function addTaskToList(task) {
+function updateStats() { // ACTUALIZAR ESTADÍSTICAS
+            if (!statsTotal || !statsCompleted || !statsPending) return;
+
+            const total = tasks.length;
+            const completed = tasks.filter((t) => t.completed).length;
+            const pending = total - completed;
+
+            statsTotal.textContent = total;
+            statsCompleted.textContent = completed;
+            statsPending.textContent = pending;
+          }
+
+  function addTaskToList(task) { //  4. PINTAR TAREA EN EL DOM
     const { id, title, tags, priority, deadline, completed } = task;
 
-    // <li class="task">
     const li = document.createElement("li");
     li.classList.add("task");
-
-    // <input type="checkbox" ...>
+    
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = id;
     checkbox.classList.add("task-toggle");
     checkbox.checked = completed;
 
-    // <label for="id" class="task-item">
     const label = document.createElement("label");
     label.classList.add("task-item");
     label.setAttribute("for", id);
-
-    // ----- parte izquierda: título + deadline + tags -----
-    const taskMain = document.createElement("div");
+    
+    const taskMain = document.createElement("div"); // parte izquierda: título + deadline + tags
     taskMain.classList.add("task-main");
 
     const titleRow = document.createElement("div");
@@ -181,11 +178,12 @@ function updateCategoryMenu() {
     });
 
     meta.appendChild(tagsContainer);
-
     taskMain.appendChild(titleRow);
     taskMain.appendChild(meta);
+        
+    const taskSide = document.createElement("div"); // parte derecha: task-side (badge + eliminar)
+    taskSide.classList.add("task-side");
 
-    // ----- badge de prioridad -----
     const badge = document.createElement("span");
     badge.classList.add("task-badge");
 
@@ -207,35 +205,32 @@ function updateCategoryMenu() {
     }
     badge.textContent = priorityText;
 
-    // ----- botón de eliminar -----
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.textContent = "Eliminar";
     deleteButton.classList.add("task-delete");
 
-    // ----- marcar completada -----
-    checkbox.addEventListener("change", () => {
+    taskSide.appendChild(badge);
+    taskSide.appendChild(deleteButton);
+    
+    checkbox.addEventListener("change", () => { // evento para completar tarea
       const taskIndex = tasks.findIndex((t) => t.id === id);
       if (taskIndex !== -1) {
         tasks[taskIndex].completed = checkbox.checked;
         saveTasks();
+        updateStats(); // si ya tienes esta función
       }
     });
 
-    // montar la tarjeta
+    // montar toda la tarjeta
     label.appendChild(taskMain);
-    label.appendChild(badge);
-    label.appendChild(deleteButton);
-
+    label.appendChild(taskSide);
     li.appendChild(checkbox);
     li.appendChild(label);
-
     taskList.appendChild(li);
   }
 
-  // ================================
   //  LISTENER PARA FILTRO DE BÚSQUEDA Y PRIORIDAD
-  // ================================
   if (searchInput) {
     searchInput.addEventListener("input", (event) => {
       activeSearchQuery = event.target.value.trim();
@@ -291,30 +286,23 @@ function updateCategoryMenu() {
       deadline,
       completed: false,
     };
-   
+       
     // 1) añadir al array
     tasks.push(newTask);
-
     // 2) guardar en localStorage
     saveTasks();
-
     // 3) pintar en el DOM
     addTaskToList(newTask);
-
-    // 👉 4) actualizar menú de categorías
+    // 4) actualizar menú de categorías
     updateCategoryMenu();
-
-    // 5) limpiar formulario
+    // 5) actualizar estadísticas
+    updateStats();
+    // 6) limpiar formulario
     form.reset();
     titleInput.focus();
-
   });
 
-  // ================================
-  //  6. FILTRO DE BÚSQUEDA Y PRIORIDAD
-  // ================================
-  
-  function applyFilter() {
+  function applyFilter() { //  6. FILTRO DE BÚSQUEDA Y PRIORIDAD
     const normalizedQuery = activeSearchQuery.toLowerCase();
     const allTasks = taskList.querySelectorAll(".task");
 
