@@ -2,6 +2,49 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   // ================================
+  // 0. MODO OSCURO (tema)
+  // ================================
+  const THEME_KEY = "theme"; // clave en localStorage
+
+  function applyTheme(theme) {
+    const root = document.documentElement; // <html>
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }
+
+  function updateThemeToggleText(button, theme) {
+    if (!button) return;
+    if (theme === "dark") {
+      button.textContent = "☀️ Modo claro";
+    } else {
+      button.textContent = "🌙 Modo oscuro";
+    }
+  }
+
+  // Leer preferencia guardada o media query del sistema
+  const storedTheme = localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
+
+  applyTheme(initialTheme);
+
+  const themeToggleButton = document.getElementById("theme-toggle");
+  updateThemeToggleText(themeToggleButton, initialTheme);
+
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener("click", () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      const newTheme = isDark ? "light" : "dark";
+      applyTheme(newTheme);
+      localStorage.setItem(THEME_KEY, newTheme);
+      updateThemeToggleText(themeToggleButton, newTheme);
+    });
+  }
+
+  // ================================
   //  1. ESTADO GLOBAL
   // ================================
   let tasks = [];  
