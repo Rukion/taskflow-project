@@ -1,6 +1,8 @@
 # App UNO - Taskflow Project
-Aplicación web sencilla para gestionar tareas: [App UNO][1]
- [1]: https://taskflow-project-virid.vercel.app
+Aplicación web sencilla para gestionar tareas: [App UNO][1] y [Taildwind][2]
+
+ [1]: ttps://taskflow-project-virid.vercel.app
+ [2]: https://tailwindcss.com/
 
  - Herramientas: **HTML + CSS + JavaScript** y se despliega en **Vercel**.
 
