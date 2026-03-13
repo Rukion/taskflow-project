@@ -241,7 +241,7 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
     deadlineSpan.classList.add("task-deadline");
     deadlineSpan.textContent = deadline || "";
 
-    titleRow.appendChild(h3);
+    titleRow.appendChild(titleButton);
     titleRow.appendChild(deadlineSpan);
 
     const meta = document.createElement("div");
