@@ -642,3 +642,38 @@ main {
     font-size: 16px;           /* evitar zoom del móvil */
   }
 }
+
+
+/* ====== ACCIONES MASIVAS ====== */
+
+.task-bulk-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.bulk-action-btn {
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #e0c466;       /* amarillo suave como el título */
+  background-color: #fff7cc;        /* fondo amarillo pastel */
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.bulk-action-btn:hover {
+  background-color: #ffef99;
+}
+
+/* En móvil, aseguramos tamaño cómodo para evitar zoom automático */
+@media (max-width: 768px) {
+  .bulk-action-btn {
+    font-size: 16px;
+    padding: 6px 10px;
+  }
+}
+

@@ -142,59 +142,25 @@
         </section>
 
   <section class="task-section">
-    <h2>Tareas de hoy</h2>
+    <h2>Tareas pendientes:</h2>
 
-    <ul class="task-list" id="task-list">
-      <!-- Las tareas se agregarán aquí dinámicamente -->
-       
-      <li class="task"> <!-- TAREA 1 -->
-              <!-- checkbox oculto que controla el estado -->
-              <input type="checkbox" id="task-1" class="task-toggle" />
+    <ul class="task-list" id="task-list"> <!-- Las tareas se agregarán aquí dinámicamente -->
 
-              <!-- la tarjeta completa es un label: click en cualquier parte cambia el estado -->
-              <label for="task-1" class="task-item">
-                <div class="task-main">
-                  <div class="task-title-row">
-                    <button type="button" class="task-title-button">Comer Helado</button>
-                    <span class="task-deadline">Cuando apetezca.</span>
-                  </div>
-
-                  <div class="task-meta">
-                    <div class="task-tags">
-                      <span class="task-tag">Alimentación</span>
-                      <span class="task-tag">Salud</span>
-                      <span class="task-tag">Helado</span>
-                    </div>
-                  </div>
-                </div>
-
-                <span class="task-badge priority-high">Alta</span>
-                <button type="button" class="task-delete">Eliminar</button>
-              </label>
-            </li>
-  
-            <li class="task">  <!-- TAREA 2 -->
-              <input type="checkbox" id="task-2" class="task-toggle" />
-              <label for="task-2" class="task-item">
-                <div class="task-main">
-                  <div class="task-title-row">
-                    <button type="button" class="task-title-button">Aprender HTML y CSS</button>
-                    <span class="task-deadline">3 months left.</span>
-                  </div>
-
-                  <div class="task-meta">
-                    <div class="task-tags">
-                      <span class="task-tag">DAM</span>
-                      <span class="task-tag">Prácticas</span>
-                    </div>
-                  </div>
-                </div>
-
-                <span class="task-badge priority-low">Baja</span>
-                <button type="button" class="task-delete">Eliminar</button>
-              </label>
-            </li>                 
-          </ul>
+        </label>
+      </li>                 
+    </ul>      
+          <div class="task-bulk-actions"> <!-- Acciones masivas sobre tareas -->
+            <button
+              type="button"
+              id="complete-all-tasks"
+              class="bulk-action-btn"
+            >Todas completadas</button>
+            <button
+              type="button"
+              id="clear-completed-tasks"
+              class="bulk-action-btn"
+            >Borrar completadas</button>
+          </div>
         </section>
       </main>
     </div>

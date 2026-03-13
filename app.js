@@ -65,7 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsCompleted = document.getElementById("stats-completed");
   const statsPending = document.getElementById("stats-pending");
   const collapsibleHeader = document.querySelector(".collapsible-header"); // "Nueva Tarea" COLAPSABLE
-  const collapsibleContent = document.querySelector(".collapsible-content");
+  const collapsibleContent = document.querySelector(".collapsible-content");  
+  const completeAllBtn = document.getElementById("complete-all-tasks");
+  const clearCompletedBtn = document.getElementById("clear-completed-tasks");
+
 
   if (collapsibleHeader && collapsibleContent) {
     collapsibleHeader.addEventListener("click", () => {
@@ -177,16 +180,16 @@ function updateCategoryMenu() { //  ACTUALIZAR MENÚ DE CATEGORÍAS
 }
 
 function updateStats() { // ACTUALIZAR ESTADÍSTICAS
-            if (!statsTotal || !statsCompleted || !statsPending) return;
+    if (!statsTotal || !statsCompleted || !statsPending) return;
 
-            const total = tasks.length;
-            const completed = tasks.filter((t) => t.completed).length;
-            const pending = total - completed;
+    const total = tasks.length;
+    const completed = tasks.filter((t) => t.completed).length;
+    const pending = total - completed;
 
-            statsTotal.textContent = total;
-            statsCompleted.textContent = completed;
-            statsPending.textContent = pending;
-          }
+    statsTotal.textContent = total;
+    statsCompleted.textContent = completed;
+    statsPending.textContent = pending;
+  } 
         
   function enableTitleButtonEditing(titleButton, taskId) { // HABILITAR EDICIÓN DEL TÍTULO DESDE UN BOTÓN
     titleButton.addEventListener("click", (event) => {
@@ -378,12 +381,74 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
       applyFilter();
     });
   }
+  
+  // ACCIONES MASIVAS
+  if (completeAllBtn) {
+    completeAllBtn.addEventListener("click", () => {
+      // 1) Actualizar todos los objetos en memoria
+      tasks = tasks.map((task) => ({
+        ...task,
+        completed: true,
+      }));
+
+      // 2) Guardar en localStorage
+      saveTasks();
+
+      // 3) Actualizar todos los checkboxes del DOM
+      const allCheckboxes = taskList.querySelectorAll(".task-toggle");
+      allCheckboxes.forEach((checkbox) => {
+        checkbox.checked = true;
+      });
+
+      // 4) Actualizar estadísticas
+      if (typeof updateStats === "function") {
+        updateStats();
+      }
+    });
+  }
+  
+  if (clearCompletedBtn) {
+    clearCompletedBtn.addEventListener("click", () => {
+      const confirmed = window.confirm(
+        "¿Seguro que quieres borrar todas las tareas completadas?"
+      );
+      if (!confirmed) return;
+
+      // 1) Filtrar el array para quedarnos SOLO con las no completadas
+      const incompleteTasks = tasks.filter((task) => !task.completed);
+
+      // 2) Actualizar estado global
+      tasks = incompleteTasks;
+
+      // 3) Guardar en localStorage
+      saveTasks();
+
+      // 4) Eliminar del DOM los <li> cuyas tareas estén completadas
+      const allTasksLi = taskList.querySelectorAll(".task");
+      allTasksLi.forEach((li) => {
+        const checkbox = li.querySelector(".task-toggle");
+        if (checkbox && checkbox.checked) {
+          li.remove();
+        }
+      });
+
+      // 5) Actualizar menú de categorías y estadísticas
+      if (typeof updateCategoryMenu === "function") {
+        updateCategoryMenu();
+      }
+      if (typeof updateStats === "function") {
+        updateStats();
+      }
+
+      // 6) Reaplicar filtros (por si había texto/prioridad activos)
+      if (typeof applyFilter === "function") {
+        applyFilter();
+      }
+    });
+  }
 
 
-
-  // ================================
-  //  5. AÑADIR TAREA DESDE FORM
-  // ================================
+  // AÑADIR TAREA DESDE FORM 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
