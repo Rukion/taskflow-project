@@ -1,8 +1,9 @@
 # App UNO - Taskflow Project
-Aplicación web sencilla para gestionar tareas: [App UNO][1] y [Taildwind][2]
+Aplicación web sencilla para gestionar tareas.
+[App UNO][1] cómo práctica de DAM en [Corner-Estudios][2]
 
- [1]: ttps://taskflow-project-virid.vercel.app
- [2]: https://tailwindcss.com/
+ [1]: https://taskflow-project-virid.vercel.app
+ [2]: https://www.corner-estudios.com/
 
  - Herramientas: **HTML + CSS + JavaScript** y se despliega en **Vercel**.
 
