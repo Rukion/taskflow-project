@@ -257,6 +257,30 @@ main {
   gap: var(--space-md);
 }
 
+/* Botón que ocupa el título de la tarea */
+.task-title-button {
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #e0c466;         /* amarillo suave */
+  background-color: #fff7cc;          /* fondo amarillo pastel */
+  border-radius: 4px;
+  padding: 2px 6px;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+/* Al pasar el ratón, un poquito más oscuro */
+.task-title-button:hover {
+  background-color: #ffef99;
+}
+
+/* Quitar el borde azul feo por defecto pero respetar accesibilidad */
+.task-title-button:focus-visible {
+  outline: 2px solid #336699;         /* o el color principal de tu tema */
+  outline-offset: 2px;
+}
+
 /* Input temporal para editar el título */
 .task-title-input {
   font-family: var(--font-family);
@@ -268,7 +292,7 @@ main {
   box-sizing: border-box;
 }
 
-/* En móvil, mantener tamaño cómodo para evitar zoom */
+/* En móvil, subir tamaño para evitar zoom automático */
 @media (max-width: 768px) {
   .task-title-input {
     font-size: 16px;

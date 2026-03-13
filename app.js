@@ -144,44 +144,42 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
             statsCompleted.textContent = completed;
             statsPending.textContent = pending;
           }
-    
-  function enableTitleEditing(titleElement, taskId) { // HABILITAR EDICIÓN DEL TÍTULO (doble clic)
-    titleElement.addEventListener("dblclick", (event) => {
+        
+  function enableTitleButtonEditing(titleButton, taskId) { // HABILITAR EDICIÓN DEL TÍTULO DESDE UN BOTÓN
+    titleButton.addEventListener("click", (event) => {
+      event.stopPropagation();
       event.preventDefault();
-      event.stopPropagation(); // evitar que el doble clic marque la tarea
+      const currentTitle = titleButton.textContent || "";
 
-      const currentTitle = titleElement.textContent || "";
-
-      // Crear input temporal
-      const input = document.createElement("input");
+      const input = document.createElement("input"); // Crear input temporal
       input.type = "text";
       input.classList.add("task-title-input");
       input.value = currentTitle;
+      
+      titleButton.replaceWith(input); // Sustituir el botón por el input
 
-      // Sustituir el <h3> por el <input>
-      titleElement.replaceWith(input);
-
-      // Foco + seleccionar todo -> se ve en azul
+      // Auto foco + selección → se ve en azul
       input.focus();
       input.select();
 
-      // Función para terminar edición
+      // Función que termina la edición
       const finishEditing = (saveChanges) => {
         const newTitleRaw = input.value.trim();
         const finalTitle = saveChanges && newTitleRaw ? newTitleRaw : currentTitle;
 
-        // Crear de nuevo el <h3>
-        const newTitleElement = document.createElement("h3");
-        newTitleElement.classList.add("task-title");
-        newTitleElement.textContent = finalTitle;
+        // Volver a crear el botón
+        const newButton = document.createElement("button");
+        newButton.type = "button";
+        newButton.classList.add("task-title-button");
+        newButton.textContent = finalTitle;
 
-        // Volver a enganchar la edición por doble clic
-        enableTitleEditing(newTitleElement, taskId);
+        // Reconectar la edición en el nuevo botón
+        enableTitleButtonEditing(newButton, taskId);
 
-        // Sustituir input por el nuevo <h3>
-        input.replaceWith(newTitleElement);
+        // Sustituir input por botón
+        input.replaceWith(newButton);
 
-        // Si hay que guardar y el texto no está vacío, actualizamos el array
+        // Guardar cambios si aplica
         if (saveChanges && newTitleRaw) {
           const taskIndex = tasks.findIndex((t) => t.id === taskId);
           if (taskIndex !== -1) {
@@ -197,13 +195,13 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
           e.preventDefault();
           finishEditing(true);
         } else if (e.key === "Escape") {
-          // Esc → cancelar cambios
+          // Esc → cancelar
           e.preventDefault();
           finishEditing(false);
         }
       });
 
-      // Blur → guardar cambios (comportamiento típico)
+      // blur → guardar (comportamiento típico)
       input.addEventListener("blur", () => {
         finishEditing(true);
       });
@@ -230,12 +228,14 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
     taskMain.classList.add("task-main");
 
     const titleRow = document.createElement("div");
-    titleRow.classList.add("task-title-row");
-
-    const h3 = document.createElement("h3");
-    h3.classList.add("task-title");
-    h3.textContent = title; 
-    enableTitleEditing(h3, id); // Activar edición por doble clic
+    titleRow.classList.add("task-title-row");    
+    
+    const titleButton = document.createElement("button"); // Botón de título (en lugar de <h3>)
+    titleButton.type = "button";
+    titleButton.classList.add("task-title-button");
+    titleButton.textContent = title;    
+    enableTitleButtonEditing(titleButton, id);
+    titleRow.appendChild(titleButton);
 
     const deadlineSpan = document.createElement("span");
     deadlineSpan.classList.add("task-deadline");
