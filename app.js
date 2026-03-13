@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsPending = document.getElementById("stats-pending");
   const collapsibleHeader = document.querySelector(".collapsible-header"); // "Nueva Tarea" COLAPSABLE
   const collapsibleContent = document.querySelector(".collapsible-content");  
-  const completeAllBtn = document.getElementById("complete-all-tasks");
+  const completeAllBtn = document.getElementById("complete-all-tasks"); // Acciones masivas
   const clearCompletedBtn = document.getElementById("clear-completed-tasks");
 
 
