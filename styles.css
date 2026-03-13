@@ -677,3 +677,89 @@ main {
   }
 }
 
+/* Modo oscuro: paneles */
+.dark .sidebar,
+.dark .page-wrapper,
+.dark main,
+.dark .task-section,
+.dark .stats-section {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #f1f5f9 !important;            /* slate-100 */
+  border-color: #334155 !important;     /* slate-700 */
+}
+
+.dark .task-tag {
+  background-color: #334155 !important;  /* slate-700 */
+  border-color: #475569 !important;      /* slate-600 */
+  color: #f8fafc !important;             /* slate-50 */
+}
+.dark .task-item {
+  background-color: #334155 !important;  /* slate-700 */
+  border-color: #475569 !important;      /* slate-600 */
+  color: #f8fafc !important;             /* slate-50 */
+}
+
+.dark .category-pill {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+.dark .priority-filter {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+.dark .task-title-button {
+  background-color: #854d0e !important;  /* amber-800 */
+  border-color: #a16207 !important;      /* amber-700 */
+  color: #fff !important;
+}
+
+.dark .task-title-button:hover {
+  background-color: #b45309 !important;  /* amber-600 */
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #f8fafc !important;            /* slate-50 */
+  border-color: #334155 !important;     /* slate-700 */
+}
+
+.dark input::placeholder {
+  color: #94a3b8 !important;           /* slate-400 */
+}
+
+.dark .bulk-action-btn,
+.dark .btn-primary {
+  background-color: #854d0e !important;
+  border-color: #a16207 !important;
+  color: white !important;
+}
+
+.dark .bulk-action-btn:hover,
+.dark .btn-primary:hover {
+  background-color: #b45309 !important;
+}
+
+.dark .task-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark .task-item:hover {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+.dark .task-toggle:checked + .task-item {
+  background-color: #475569 !important; /* slate-600 */
+  opacity: 0.6;
+}
+.dark .task-toggle:checked + .task-item .task-title {
+  text-decoration: line-through;
+  color: #94a3b8 !important; /* slate-400 */
+}
+
