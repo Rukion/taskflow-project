@@ -144,6 +144,71 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
             statsCompleted.textContent = completed;
             statsPending.textContent = pending;
           }
+    
+  function enableTitleEditing(titleElement, taskId) { // HABILITAR EDICIÓN DEL TÍTULO (doble clic)
+    titleElement.addEventListener("dblclick", (event) => {
+      event.preventDefault();
+      event.stopPropagation(); // evitar que el doble clic marque la tarea
+
+      const currentTitle = titleElement.textContent || "";
+
+      // Crear input temporal
+      const input = document.createElement("input");
+      input.type = "text";
+      input.classList.add("task-title-input");
+      input.value = currentTitle;
+
+      // Sustituir el <h3> por el <input>
+      titleElement.replaceWith(input);
+
+      // Foco + seleccionar todo -> se ve en azul
+      input.focus();
+      input.select();
+
+      // Función para terminar edición
+      const finishEditing = (saveChanges) => {
+        const newTitleRaw = input.value.trim();
+        const finalTitle = saveChanges && newTitleRaw ? newTitleRaw : currentTitle;
+
+        // Crear de nuevo el <h3>
+        const newTitleElement = document.createElement("h3");
+        newTitleElement.classList.add("task-title");
+        newTitleElement.textContent = finalTitle;
+
+        // Volver a enganchar la edición por doble clic
+        enableTitleEditing(newTitleElement, taskId);
+
+        // Sustituir input por el nuevo <h3>
+        input.replaceWith(newTitleElement);
+
+        // Si hay que guardar y el texto no está vacío, actualizamos el array
+        if (saveChanges && newTitleRaw) {
+          const taskIndex = tasks.findIndex((t) => t.id === taskId);
+          if (taskIndex !== -1) {
+            tasks[taskIndex].title = finalTitle;
+            saveTasks();
+          }
+        }
+      };
+
+      // Enter → guardar
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          finishEditing(true);
+        } else if (e.key === "Escape") {
+          // Esc → cancelar cambios
+          e.preventDefault();
+          finishEditing(false);
+        }
+      });
+
+      // Blur → guardar cambios (comportamiento típico)
+      input.addEventListener("blur", () => {
+        finishEditing(true);
+      });
+    });
+  }
 
   function addTaskToList(task) { //  4. PINTAR TAREA EN EL DOM
     const { id, title, tags, priority, deadline, completed } = task;
@@ -169,7 +234,8 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
 
     const h3 = document.createElement("h3");
     h3.classList.add("task-title");
-    h3.textContent = title;
+    h3.textContent = title; 
+    enableTitleEditing(h3, id); // Activar edición por doble clic
 
     const deadlineSpan = document.createElement("span");
     deadlineSpan.classList.add("task-deadline");

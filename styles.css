@@ -257,6 +257,24 @@ main {
   gap: var(--space-md);
 }
 
+/* Input temporal para editar el título */
+.task-title-input {
+  font-family: var(--font-family);
+  font-size: 13px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* En móvil, mantener tamaño cómodo para evitar zoom */
+@media (max-width: 768px) {
+  .task-title-input {
+    font-size: 16px;
+  }
+}
+
 /* columna derecha: badge + botón */
 .task-side {
   display: flex;

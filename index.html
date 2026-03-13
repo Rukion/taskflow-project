@@ -65,6 +65,7 @@
           <h2 class="collapsible-header">Nueva tarea ▾</h2>
           <div class="collapsible-content">
             <form id="task-form" class="task-form">
+
               <div class="form-row">
                 <label for="task-title">Título:</label>
                 <input
@@ -87,15 +88,6 @@
               </div>
 
               <div class="form-row">
-                <label for="task-priority">Prioridad:</label>
-                <select id="task-priority" name="priority">
-                  <option value="high">Alta</option>
-                  <option value="medium">Media</option>
-                  <option value="low">Baja</option>
-                </select>
-              </div>
-
-              <div class="form-row">
                 <label for="task-deadline">Tiempo restante (texto):</label>
                 <input
                   type="text"
@@ -103,6 +95,15 @@
                   name="deadline"
                   placeholder="ej: 16h left., 2 days left."
                 />
+              </div>
+              
+              <div class="form-row">
+                <label for="task-priority">Prioridad:</label>
+                <select id="task-priority" name="priority">
+                  <option value="high">Alta</option>
+                  <option value="medium">Media</option>
+                  <option value="low">Baja</option>
+                </select>
               </div>
 
               <button type="submit" class="btn-primary">Añadir tarea</button>
