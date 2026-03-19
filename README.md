@@ -1,7 +1,6 @@
 # App UNO - Taskflow Project
-Aplicación web sencilla para gestionar tareas.
+Aplicación web sencilla para gestionar tareas:  
 [App UNO][1] cómo práctica de DAM en [Corner-Estudios][2]
-
  [1]: https://taskflow-project-virid.vercel.app
  [2]: https://www.corner-estudios.com/
 

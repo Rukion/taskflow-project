@@ -151,10 +151,50 @@
               type="button"
               id="clear-completed-tasks"
               class="bulk-action-btn"
-            >Borrar completadas</button>
+            >Archivar completadas</button>
           </div>
         </section>
       </main>
+    </div>
+  </div>
+
+  <!-- Modal de Archivo -->
+  <div id="archive-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-lg shadow-xl border border-slate-300 dark:border-slate-700 overflow-hidden flex flex-col max-h-[90vh]">
+      <!-- Header del Modal -->
+      <div class="bg-slate-800 dark:bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-700">
+        <h2 class="text-xl font-bold flex items-center gap-2">
+          📁 Archivo de Tareas
+        </h2>
+        <button id="close-archive-btn" class="text-slate-300 hover:text-white transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Contenido del Modal -->
+      <div class="p-6 overflow-y-auto flex-1">
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
+          Aquí se encuentran tus tareas completadas. Puedes recuperarlas si es necesario.
+        </p>
+        
+        <ul id="archive-list" class="task-list">
+          <!-- Las tareas archivadas se cargarán aquí -->
+        </ul>
+
+        <div id="archive-empty-msg" class="text-center py-10 hidden">
+          <p class="text-slate-400 italic">No hay tareas archivadas aún.</p>
+        </div>
+      </div>
+
+      <!-- Footer del Modal (Estadísticas rápidas) -->
+      <div class="bg-slate-50 dark:bg-slate-900/50 px-6 py-3 border-t border-slate-300 dark:border-slate-700 flex justify-between items-center">
+        <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Estadísticas del Archivo</span>
+        <div class="flex gap-4 text-sm">
+          <span>Archivadas: <span id="archive-count" class="font-bold text-sky-600 dark:text-sky-400">0</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -164,3 +204,17 @@
   </footer>
 </body>
 </html>
+
+<!-- Dropdown menu placeholder -->
+<div class="dropdown-container relative inline-block">
+  <button id="dropdown-trigger" class="dropdown-trigger text-xs px-3 py-1 rounded border border-slate-300 bg-slate-700 hover:bg-slate-600 dark:bg-slate-100 dark:text-slate-900 dark:border-slate-300 dark:hover:bg-white">
+    Más opciones ▾
+  </button>
+  <div id="dropdown-menu" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded shadow-lg z-10">
+    <!-- Dropdown items will be added here later -->
+  </div>
+</div>
+<!-- Button to open archive -->
+<button id="open-archive-btn" class="fixed bottom-4 right-4 z-40 flex items-center gap-2 px-4 py-2 rounded-full shadow-lg bg-sky-600 hover:bg-sky-700 text-white font-medium transition-all transform hover:scale-105 active:scale-95">
+  📁 Ver Archivo
+</button>

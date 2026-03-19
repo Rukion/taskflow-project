@@ -1,10 +1,9 @@
 // app.js
 
 document.addEventListener("DOMContentLoaded", () => {
-  // ================================
+  
   // 0. MODO OSCURO (tema)
-  // ================================
-  const THEME_KEY = "theme"; // clave en localStorage
+    const THEME_KEY = "theme"; // clave en localStorage
 
   function applyTheme(theme) {
     const root = document.documentElement; // <html>
@@ -18,9 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateThemeToggleText(button, theme) {
     if (!button) return;
     if (theme === "dark") {
-      button.textContent = "☀️ Modo claro";
+      button.textContent = "☀️";
     } else {
-      button.textContent = "🌙 Modo oscuro";
+      button.textContent = "🌙";
     }
   }
 
@@ -44,10 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ================================
-  //  1. ESTADO GLOBAL
-  // ================================
-  let tasks = [];  
+    //  1. ESTADO GLOBAL
+    let tasks = [];  
   let activePriorityFilter = ""; // --- estado del filtro de prioridad y de búsqueda ---
   let activeSearchQuery = "";
   
@@ -69,13 +66,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const completeAllBtn = document.getElementById("complete-all-tasks"); // Acciones masivas
   const clearCompletedBtn = document.getElementById("clear-completed-tasks");
 
+  // REFERENCIAS ARCHIVO
+  const openArchiveBtn = document.getElementById("open-archive-btn");
+  const closeArchiveBtn = document.getElementById("close-archive-btn");
+  const archiveModal = document.getElementById("archive-modal");
+  const archiveList = document.getElementById("archive-list");
+  const archiveEmptyMsg = document.getElementById("archive-empty-msg");
+  const archiveCount = document.getElementById("archive-count");
 
   if (collapsibleHeader && collapsibleContent) {
     collapsibleHeader.addEventListener("click", () => {
       collapsibleContent.classList.toggle("open");
-
-      // Cambiamos el icono ▾ / ▸
-      if (collapsibleContent.classList.contains("open")) {
+      
+      if (collapsibleContent.classList.contains("open")) { // Cambiamos el icono ▾ / ▸
         collapsibleHeader.textContent = "Nueva tarea ▾";
       } else {
         collapsibleHeader.textContent = "Nueva tarea ▸";
@@ -83,10 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-          // Delegación de eventos para eliminar tareas (funciona para tareas viejas y nuevas)
-        taskList.addEventListener("click", (event) => {
-          // ¿Se ha hecho clic sobre un botón de eliminar o dentro de él?
-          const deleteButton = event.target.closest(".task-delete");
+        taskList.addEventListener("click", (event) => { // Delegación de eventos para eliminar tareas (funciona para tareas viejas y nuevas)
+          
+          const deleteButton = event.target.closest(".task-delete"); // ¿Se ha hecho clic sobre un botón de eliminar?
           if (!deleteButton) {
             return; // si el click no viene de un .task-delete, no hacemos nada
           }
@@ -97,12 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
           }
 
-          // Intentamos averiguar el id de la tarea (del checkbox)
-          const checkbox = li.querySelector(".task-toggle");
+          const checkbox = li.querySelector(".task-toggle"); // Intentamos averiguar el id de la tarea (del checkbox)
           const taskId = checkbox ? checkbox.id : null;
-
-          // Si tenemos taskId, lo usamos para actualizar el array tasks
-          if (taskId) {
+          
+          if (taskId) { // Si tenemos taskId, lo usamos para actualizar el array tasks
             tasks = tasks.filter((t) => t.id !== taskId);
             saveTasks();
           }
@@ -131,8 +131,12 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) {
-        tasks = parsed;
-        tasks.forEach((task) => addTaskToList(task));
+        tasks = parsed.map(task => ({
+          ...task,
+          archived: task.archived || false // Asegurar que tengan la propiedad archived
+        }));
+        renderTasks();
+        renderArchive();
       }    
 
       updateCategoryMenu(); // actualizar el menú de categorías al cargar las tareas
@@ -179,16 +183,21 @@ function updateCategoryMenu() { //  ACTUALIZAR MENÚ DE CATEGORÍAS
   });
 }
 
-function updateStats() { // ACTUALIZAR ESTADÍSTICAS
+  function updateStats() { // ACTUALIZAR ESTADÍSTICAS
     if (!statsTotal || !statsCompleted || !statsPending) return;
 
-    const total = tasks.length;
-    const completed = tasks.filter((t) => t.completed).length;
+    const total = tasks.filter(t => !t.archived).length;
+    const completed = tasks.filter((t) => t.completed && !t.archived).length;
     const pending = total - completed;
+    const archivedTotal = tasks.filter(t => t.archived).length;
 
     statsTotal.textContent = total;
     statsCompleted.textContent = completed;
     statsPending.textContent = pending;
+    
+    if (archiveCount) {
+      archiveCount.textContent = archivedTotal;
+    }
   } 
         
   function enableTitleButtonEditing(titleButton, taskId) { // HABILITAR EDICIÓN DEL TÍTULO DESDE UN BOTÓN
@@ -254,17 +263,19 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
     });
   }
 
-  function addTaskToList(task) { //  4. PINTAR TAREA EN EL DOM
+  function addTaskToList(task, isArchive = false) { //  4. PINTAR TAREA EN EL DOM
     const { id, title, tags, priority, deadline, completed } = task;
 
     const li = document.createElement("li");
     li.classList.add("task");
+    if (isArchive) li.classList.add("archived-task-item");
     
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = id;
     checkbox.classList.add("task-toggle");
     checkbox.checked = completed;
+    if (isArchive) checkbox.disabled = true; // No se puede cambiar en el archivo directamente
 
     const label = document.createElement("label");
     label.classList.add("task-item");
@@ -280,7 +291,9 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
     titleButton.type = "button";
     titleButton.classList.add("task-title-button");
     titleButton.textContent = title;    
-    enableTitleButtonEditing(titleButton, id);
+    if (!isArchive) {
+      enableTitleButtonEditing(titleButton, id);
+    }
     titleRow.appendChild(titleButton);
 
     const deadlineSpan = document.createElement("span");
@@ -332,29 +345,90 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
     }
     badge.textContent = priorityText;
 
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.textContent = "Eliminar";
-    deleteButton.classList.add("task-delete");
+    const actionButton = document.createElement("button");
+    actionButton.type = "button";
+    if (isArchive) {
+      actionButton.textContent = "Recuperar";
+      actionButton.classList.add("task-recover", "text-xs", "px-2", "py-1", "bg-sky-100", "text-sky-700", "rounded", "hover:bg-sky-200");
+      actionButton.addEventListener("click", () => {
+        unarchiveTask(id);
+      });
+    } else {
+      actionButton.textContent = "Eliminar";
+      actionButton.classList.add("task-delete");
+    }
 
     taskSide.appendChild(badge);
-    taskSide.appendChild(deleteButton);
+    taskSide.appendChild(actionButton);
     
-    checkbox.addEventListener("change", () => { // evento para completar tarea
-      const taskIndex = tasks.findIndex((t) => t.id === id);
-      if (taskIndex !== -1) {
-        tasks[taskIndex].completed = checkbox.checked;
-        saveTasks();
-        updateStats(); // si ya tienes esta función
-      }
-    });
+    if (!isArchive) {
+      checkbox.addEventListener("change", () => { // evento para completar tarea
+        const taskIndex = tasks.findIndex((t) => t.id === id);
+        if (taskIndex !== -1) {
+          tasks[taskIndex].completed = checkbox.checked;
+          saveTasks();
+          updateStats(); // si ya tienes esta función
+        }
+      });
+    }
 
     // montar toda la tarjeta
     label.appendChild(taskMain);
     label.appendChild(taskSide);
     li.appendChild(checkbox);
     li.appendChild(label);
-    taskList.appendChild(li);
+    
+    if (isArchive) {
+      archiveList.appendChild(li);
+    } else {
+      taskList.appendChild(li);
+    }
+  }
+
+  function unarchiveTask(id) {
+    const taskIndex = tasks.findIndex((t) => t.id === id);
+    if (taskIndex !== -1) {
+      tasks[taskIndex].archived = false;
+      saveTasks();
+      renderTasks();
+      renderArchive();
+      updateStats();
+      updateCategoryMenu();
+    }
+  }
+
+  function archiveTask(id) {
+    const taskIndex = tasks.findIndex((t) => t.id === id);
+    if (taskIndex !== -1) {
+      tasks[taskIndex].archived = true;
+      saveTasks();
+      renderTasks();
+      renderArchive();
+      updateStats();
+      updateCategoryMenu();
+    }
+  }
+
+  function renderTasks() {
+    taskList.innerHTML = "";
+    tasks
+      .filter((t) => !t.archived)
+      .forEach((t) => addTaskToList(t, false));
+    applyFilter();
+  }
+
+  function renderArchive() {
+    archiveList.innerHTML = "";
+    const archived = tasks.filter((t) => t.archived);
+    
+    if (archived.length === 0) {
+      archiveEmptyMsg.classList.remove("hidden");
+    } else {
+      archiveEmptyMsg.classList.add("hidden");
+      archived.forEach((t) => addTaskToList(t, true));
+    }
+    
+    archiveCount.textContent = archived.length;
   }
 
   //  LISTENER PARA FILTRO DE BÚSQUEDA Y PRIORIDAD
@@ -409,43 +483,53 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
   
   if (clearCompletedBtn) {
     clearCompletedBtn.addEventListener("click", () => {
+      const completedCount = tasks.filter(t => t.completed && !t.archived).length;
+      if (completedCount === 0) {
+        alert("No hay tareas completadas para archivar.");
+        return;
+      }
+
       const confirmed = window.confirm(
-        "¿Seguro que quieres borrar todas las tareas completadas?"
+        `¿Seguro que quieres enviar ${completedCount} tareas completadas al archivo?`
       );
       if (!confirmed) return;
 
-      // 1) Filtrar el array para quedarnos SOLO con las no completadas
-      const incompleteTasks = tasks.filter((task) => !task.completed);
-
-      // 2) Actualizar estado global
-      tasks = incompleteTasks;
-
-      // 3) Guardar en localStorage
-      saveTasks();
-
-      // 4) Eliminar del DOM los <li> cuyas tareas estén completadas
-      const allTasksLi = taskList.querySelectorAll(".task");
-      allTasksLi.forEach((li) => {
-        const checkbox = li.querySelector(".task-toggle");
-        if (checkbox && checkbox.checked) {
-          li.remove();
+      // Marcar como archivadas todas las que estén completadas y no estén ya archivadas
+      tasks = tasks.map(task => {
+        if (task.completed && !task.archived) {
+          return { ...task, archived: true };
         }
+        return task;
       });
 
-      // 5) Actualizar menú de categorías y estadísticas
-      if (typeof updateCategoryMenu === "function") {
-        updateCategoryMenu();
-      }
-      if (typeof updateStats === "function") {
-        updateStats();
-      }
-
-      // 6) Reaplicar filtros (por si había texto/prioridad activos)
-      if (typeof applyFilter === "function") {
-        applyFilter();
-      }
+      saveTasks();
+      renderTasks();
+      renderArchive();
+      updateCategoryMenu();
+      updateStats();
     });
   }
+
+  // LISTENERS MODAL ARCHIVO
+  if (openArchiveBtn && archiveModal) {
+    openArchiveBtn.addEventListener("click", () => {
+      archiveModal.classList.remove("hidden");
+      renderArchive();
+    });
+  }
+
+  if (closeArchiveBtn && archiveModal) {
+    closeArchiveBtn.addEventListener("click", () => {
+      archiveModal.classList.add("hidden");
+    });
+  }
+
+  // Cerrar modal al hacer click fuera
+  window.addEventListener("click", (event) => {
+    if (event.target === archiveModal) {
+      archiveModal.classList.add("hidden");
+    }
+  });
 
 
   // AÑADIR TAREA DESDE FORM 
@@ -474,6 +558,7 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
       priority,
       deadline,
       completed: false,
+      archived: false,
     };
        
     // 1) añadir al array
@@ -481,7 +566,7 @@ function updateStats() { // ACTUALIZAR ESTADÍSTICAS
     // 2) guardar en localStorage
     saveTasks();
     // 3) pintar en el DOM
-    addTaskToList(newTask);
+    renderTasks();
     // 4) actualizar menú de categorías
     updateCategoryMenu();
     // 5) actualizar estadísticas
