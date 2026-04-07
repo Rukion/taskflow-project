@@ -54,4 +54,24 @@ Observo, que sigue perfectamente el formato de los comentarios que usaba Copilot
 }
 
   4º Usado Builder (Composer) para que me genere un archivo de las tareas eliminadas en lugar de borrarlas.
-procedo a compilar... 3:48 de mi primer día del padre ¡YuHu!
+Hizo bastante bien lo que le pedí. Pero en el proceso modificó cosas que no estaban en el prompt y ya funcionaban, generando fallos.
+
+  5º Servidor MCP probado: Brave Search
+Proceso de instalación:
+ - Requisito previo: Tener instalado Node.js (v18+) en el sistema.
+ - Obtener API Key: Generar una clave en el Brave Search API Dashboard (Plan Search).
+ - Activar Project MCP: En Trae, ir a Settings > MCP y marcar la casilla "Enable Project MCP".
+ - Crear Directorio: En la raíz del proyecto, crear una carpeta llamada .trae/.
+ - Crea el archivo .trae/mcp.json siguiendo esta estructura: (Pero asegúrate de añadir .trae/ a tu archivo .gitignore para no subir tu API Key a GitHub.)
+{
+  "mcpServers": {
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "TU_API_KEY_AQUÍ"
+      }
+    }
+  }
+}
+ - Verificación: Abrir el panel de MCP en Trae y confirmar que el servidor brave-search aparece con estado activo.

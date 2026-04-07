@@ -3,218 +3,464 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista de tareas</title>
+  <title>App UNO Taskflow | Advenica System</title>
   
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              // opcional: mapeos personalizados
-            },
-          },
-        },
-      };
-    </script>
-    <link rel="stylesheet" href="styles.css" />
+  <!-- Tailwind CSS v4 Play CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    /* Escalado fluido y natural para resoluciones altas */
+    :root { font-size: 16px; }
+    @media (min-width: 1280px) {
+      :root { font-size: clamp(16px, 0.8vw + 6px, 24px); }
+    }
+    @media (min-width: 3840px) {
+      :root { font-size: 24px; }
+    }
+  </style>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-advenica-navy:  #001226;
+      --color-advenica-blue:  #002244;
+      --color-advenica-accent: #00a0e3;
+      --color-advenica-dark:  #000a14;
+      --color-advenica-black: #000000;
+      --breakpoint-2k: 2560px;
+      --breakpoint-4k: 3840px;
+    }
+
+    @layer base {
+      body {
+        @apply m-0 p-0 transition-colors duration-500 bg-advenica-black text-slate-100
+               selection:bg-advenica-accent/30 selection:text-white;
+      }
+    }
+
+    @layer components {
+      /* Fondo con degradado radial */
+      .split-bg {
+        @apply fixed inset-0 -z-10;
+        background: radial-gradient(circle at 50% 0%,
+          var(--color-advenica-navy) 0%,
+          var(--color-advenica-black) 100%);
+      }
+
+      .advenica-card {
+        @apply bg-advenica-navy/40 backdrop-blur-xl border border-advenica-accent/10
+               shadow-2xl rounded-sm transition-all;
+      }
+
+      .advenica-btn {
+        @apply px-8 py-3 bg-advenica-accent hover:bg-white hover:text-advenica-black
+               text-white font-black uppercase text-[0.6rem] tracking-[0.3em]
+               transition-all active:scale-95 rounded-sm shadow-lg shadow-advenica-accent/20;
+      }
+
+      .advenica-btn-outline {
+        @apply px-8 py-3 border border-advenica-accent/40 text-advenica-accent
+               hover:bg-advenica-accent hover:text-white font-black uppercase
+               text-[0.6rem] tracking-[0.3em] transition-all active:scale-95 rounded-sm;
+      }
+
+      .advenica-input {
+        @apply bg-black/40 border border-advenica-accent/10 px-6 py-4 text-sm font-bold
+               text-white outline-none focus:border-advenica-accent focus:bg-black/60
+               transition-all rounded-sm placeholder:text-slate-600;
+      }
+
+      /* Panel colapsable: arranca cerrado, abre con clase .open */
+      .collapsible-content {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+      }
+      .collapsible-content.open {
+        max-height: 60rem;
+        opacity: 1;
+      }
+
+      /* Etiqueta de sección estilo técnico */
+      .tech-heading {
+        @apply font-black uppercase tracking-[0.3em] text-[0.55rem]
+               text-advenica-accent border-l-2 border-advenica-accent pl-4;
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<script src="app.js"></script>
-<body class="bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
 
-<!-- CABECERA -->
-<header
-  class="app-header flex items-center justify-between bg-slate-800 dark:bg-slate-900 text-white px-4 py-3 border-b border-slate-900">
-  <div>
-    <h1 class="text-lg font-bold">App UNO Taskflow</h1>
-    <p class="subtitle text-xs text-slate-200">
-      Contra la procrastinación.
-    </p>
-  </div>
+<body class="text-slate-100 min-h-screen font-[sans-serif]">
+  <div class="split-bg"></div>
 
-    <button
-    id="theme-toggle"
-    type="button"
-    class="text-xs px-3 py-1 rounded border border-slate-300 bg-slate-700 hover:bg-slate-600 dark:bg-slate-100 dark:text-slate-900 dark:border-slate-300 dark:hover:bg-white">
-    🌙 Modo oscuro
-  </button>
-</header>
+  <!-- =====================================================
+       CABECERA — sin sticky, no sigue el scroll (cambio 2)
+       Incluye botón de archivo discreto (cambio 3)
+       y toggle de tema ovalado (cambio 4)
+  ====================================================== -->
+  <header class="app-header max-w-4xl mx-auto flex items-center justify-between
+                 bg-black/60 backdrop-blur-md text-white px-10 py-6
+                 border-b border-advenica-accent/10">
 
-  <!-- CONTENEDOR TIPO FORO -->  
-<div class="page-wrapper max-w-3xl mx-auto bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 min-h-screen">    
-    
-    <div class="top-searchbar"> <!-- BUSCADOR GLOBAL FIJO ARRIBA -->
-      <span class="search-icon">🔎</span>
-      <input 
+    <!-- Logo y título -->
+    <div class="flex items-center gap-6">
+      <div class="w-12 h-12 flex items-center justify-center bg-advenica-accent
+                  rounded-sm shadow-xl shadow-advenica-accent/30">
+        <span class="text-2xl">🛡️</span>
+      </div>
+      <div>
+        <h1 class="text-2xl font-black uppercase tracking-tighter leading-none">
+          App UNO <span class="text-advenica-accent">Taskflow</span>
+        </h1>
+        <p class="text-[0.55rem] text-slate-500 font-bold uppercase tracking-[0.4em] mt-1.5">
+          Security Organization System
+        </p>
+      </div>
+    </div>
+
+    <!-- Acciones de cabecera -->
+    <div class="flex items-center gap-5">
+
+      <!-- Botón de archivo (cambio 3): discreto, en cabecera -->
+      <button
+        id="open-archive-btn"
+        type="button"
+        title="Ver registro histórico de tareas archivadas"
+        class="flex items-center gap-2 text-[0.6rem] px-4 py-2 rounded-sm
+               border border-slate-700 text-slate-400
+               hover:text-advenica-accent hover:border-advenica-accent/40
+               transition-all font-black uppercase tracking-widest">
+        <span>📁</span>
+        <span class="hidden sm:inline">Archivo</span>
+        <!-- Contador de tareas archivadas -->
+        <span id="archive-count" class="font-black text-advenica-accent">0</span>
+      </button>
+
+      <!-- Toggle de tema (cambio 4): óvalo con círculo deslizante
+           Modo oscuro → fondo blanco + círculo negro (desplazado a la derecha)
+           Modo luz    → fondo negro + círculo gris claro (posición izquierda) -->
+      <button
+        id="theme-toggle"
+        type="button"
+        aria-label="Cambiar entre modo oscuro y modo luz"
+        class="theme-toggle-btn">
+        <div class="theme-toggle-track">
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+
+    </div>
+  </header>
+  <!-- fin cabecera -->
+
+
+  <!-- =====================================================
+       CONTENEDOR PRINCIPAL DE LA APP
+  ====================================================== -->
+  <div class="page-wrapper max-w-4xl mx-auto my-12 advenica-card
+              overflow-hidden min-h-[85vh] flex flex-col">
+
+    <!-- BARRA DE BÚSQUEDA SUPERIOR -->
+    <div class="top-searchbar p-8 bg-black/20 border-b border-advenica-accent/5
+                flex items-center gap-6 group">
+      <span class="search-icon text-advenica-accent/40 group-focus-within:text-advenica-accent
+                   transition-colors text-xl">🔎</span>
+      <input
         id="search"
         type="text"
-        class="top-search-input"
-        placeholder="Buscar..."
+        class="w-full bg-transparent outline-none text-lg font-bold
+               placeholder:text-slate-700 tracking-tight text-white"
+        placeholder="BUSCAR EN EL REGISTRO DE OPERACIONES..."
       />
     </div>
 
-    <div class="layout">
+    <!-- LAYOUT: sidebar + contenido principal -->
+    <div class="layout flex flex-col md:flex-row flex-1">
+
       <!-- BARRA LATERAL -->
-      <aside class="sidebar">
-        <section class="menu-section"> <!-- NUEVO MENÚ DE CATEGORÍAS -->
-          <p class="menu-title">CATEGORÍAS:</p>
-          <div id="category-menu" class="category-menu">
-            <!-- Aquí se pintarán las categorías dinámicamente -->
-          </div>
-                 
-          <section class="menu-section stats-section"> <!-- SECCIÓN DE ESTADÍSTICAS -->
-            <p class="menu-title">ESTADÍSTICAS:</p>
-            <ul class="stats-list">
-              <li>Total: <span id="stats-total">0</span></li>
-              <li>Completadas: <span id="stats-completed">0</span></li>
-              <li>Pendientes: <span id="stats-pending">0</span></li>
-            </ul>
+      <aside class="sidebar w-full md:w-72 p-8 bg-black/20
+                    border-r border-advenica-accent/10 space-y-10">
+
+        <section class="menu-section">
+          <p class="tech-heading mb-5">CLASIFICACIÓN:</p>
+          <div id="category-menu" class="flex flex-wrap gap-2"></div>
         </section>
-      </aside>    
- 
-        <section class="menu-section"> <!-- FILTRO DE PRIORIDAD -->
-          <p class="menu-title">Filtrar:</p>
-          <div id="priority-menu" class="priority-menu">
-            <button type="button" class="priority-filter active" data-priority="">Todas</button>
-            <button type="button" class="priority-filter" data-priority="high">Alta</button>
-            <button type="button" class="priority-filter" data-priority="medium">Media</button>
-            <button type="button" class="priority-filter" data-priority="low">Baja</button>
-          </div>  
+
+        <section class="menu-section stats-section">
+          <p class="tech-heading mb-5">MÉTRICAS:</p>
+          <ul class="space-y-4">
+            <li class="flex items-center justify-between group">
+              <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-widest">Total</span>
+              <span id="stats-total"
+                class="text-sm font-black text-white group-hover:text-advenica-accent transition-colors">0</span>
+            </li>
+            <li class="flex items-center justify-between group">
+              <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-widest">Éxito</span>
+              <span id="stats-completed"
+                class="text-sm font-black text-green-500 group-hover:scale-110 transition-transform">0</span>
+            </li>
+            <li class="flex items-center justify-between group">
+              <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-widest">En Proceso</span>
+              <span id="stats-pending"
+                class="text-sm font-black text-amber-500 group-hover:scale-110 transition-transform">0</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="menu-section">
+          <p class="tech-heading mb-5">FILTRADO:</p>
+          <div id="priority-menu" class="grid grid-cols-1 gap-2">
+            <button type="button" class="priority-filter advenica-btn-outline py-2.5 px-4 active" data-priority="">TODAS</button>
+            <button type="button" class="priority-filter advenica-btn-outline border-red-500/40 text-red-500 hover:bg-red-500 py-2.5 px-4" data-priority="high">ALTA</button>
+            <button type="button" class="priority-filter advenica-btn-outline border-amber-500/40 text-amber-500 hover:bg-amber-500 py-2.5 px-4" data-priority="medium">MEDIA</button>
+            <button type="button" class="priority-filter advenica-btn-outline border-blue-500/40 text-blue-500 hover:bg-blue-500 py-2.5 px-4" data-priority="low">BAJA</button>
+          </div>
+        </section>
+      </aside>
+      <!-- fin sidebar -->
 
       <!-- CONTENIDO PRINCIPAL -->
-      <main>
-        <section class="task-section collapsible-section">
-          <h2 class="collapsible-header">Nueva tarea ▾</h2>
-          <div class="collapsible-content">
-            <form id="task-form" class="task-form">
+      <main class="flex-1 p-10 bg-transparent">
+        <section class="task-section space-y-6">
 
-              <div class="form-row">
-                <label for="task-title">Título:</label>
-                <input
-                  type="text"
-                  id="task-title"
-                  name="title"
-                  required
-                  placeholder="Escribe aquí la tarea…"
-                />
-              </div>
-
-              <div class="form-row">
-                <label for="task-tags">Categorías (separadas por comas):</label>
-                <input
-                  type="text"
-                  id="task-tags"
-                  name="tags"
-                  placeholder="ej: DAM, estudio, prácticas"
-                />
-              </div>
-
-              <div class="form-row">
-                <label for="task-deadline">Tiempo restante (texto):</label>
-                <input
-                  type="text"
-                  id="task-deadline"
-                  name="deadline"
-                  placeholder="ej: 16h left., 2 days left."
-                />
-              </div>
-
-              <div class="form-row">
-                <label for="task-priority">Prioridad:</label>
-                <select id="task-priority" name="priority">
-                  <option value="high">Alta</option>
-                  <option value="medium">Media</option>
-                  <option value="low">Baja</option>
-                </select>
-              </div>
-              
-            <button type="submit" class="btn-primary px-3 py-1 text-xs font-medium border border-sky-700 bg-sky-100 hover:bg-sky-200 text-sky-900 rounded dark:bg-sky-700 dark:text-white dark:hover:bg-sky-600"
-            >Añadir tarea</button>
-
-            </form>
+          <!-- Título de sección -->
+          <div class="flex items-center justify-between border-b border-advenica-accent/10 pb-4">
+            <h2 class="text-xl font-black text-white uppercase tracking-tighter">
+              OPERACIONES ACTIVAS
+            </h2>
           </div>
-        </section>
 
-  <section class="task-section">
-    <h2>Tareas pendientes:</h2>
-    <ul class="task-list" id="task-list"> <!-- Las tareas se agregarán aquí dinámicamente -->            
-    </ul>      
-          <div class="task-bulk-actions"> <!-- Acciones masivas sobre tareas -->
-            <button
-              type="button"
-              id="complete-all-tasks"
-              class="bulk-action-btn"
-            >Todas completadas</button>
-            <button
-              type="button"
-              id="clear-completed-tasks"
-              class="bulk-action-btn"
-            >Archivar completadas</button>
+          <!-- Lista de tareas (se rellena dinámicamente desde app.js) -->
+          <ul class="task-list space-y-4" id="task-list"></ul>
+
+          <!-- =================================================
+               TARJETA DE NUEVA TAREA (cambio 1)
+               Siempre queda al final de la lista. Al hacer clic
+               despliega el formulario de creación debajo.
+          ================================================== -->
+          <div
+            id="new-task-card"
+            class="new-task-card group relative p-6 rounded-sm
+                   flex items-center gap-6 cursor-pointer select-none"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="new-task-form-panel">
+
+            <!-- Pseudo-checkbox visual (decorativo) -->
+            <div class="w-6 h-6 rounded-sm border-2 border-dashed
+                        border-advenica-accent/20 flex items-center justify-center
+                        text-advenica-accent/30 flex-shrink-0 text-xs font-black">+</div>
+
+            <!-- Contenido placeholder -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-4 mb-3">
+                <span class="ntc-title text-lg font-black uppercase tracking-tight italic">
+                  Nueva Tarea
+                </span>
+                <span class="ntc-meta text-[0.6rem] font-bold uppercase tracking-widest">
+                  [ Fecha límite ]
+                </span>
+              </div>
+              <div class="flex gap-3">
+                <span class="ntc-tag px-3 py-1 text-[0.5rem] font-black uppercase
+                             rounded-sm border border-dashed">
+                  Añade Etiquetas
+                </span>
+              </div>
+            </div>
+
+            <!-- Badge placeholder + icono expandir -->
+            <div class="flex items-center gap-6 flex-shrink-0">
+              <span class="ntc-badge text-[0.55rem] font-black uppercase px-3 py-1.5
+                           rounded-sm border border-dashed tracking-[0.2em]">
+                STANDARD
+              </span>
+              <!-- El icono rota 45° cuando el panel está abierto -->
+              <div id="new-task-expand-icon"
+                class="ntc-expand w-8 h-8 flex items-center justify-center
+                       rounded-full text-xl font-black transition-transform duration-500">
+                +
+              </div>
+            </div>
           </div>
+          <!-- fin tarjeta nueva tarea -->
+
+          <!-- Panel del formulario, colapsado por defecto -->
+          <div id="new-task-form-panel" class="collapsible-content">
+            <div class="p-8 space-y-8 bg-black/20 border border-advenica-accent/10 rounded-sm">
+              <form id="task-form" class="space-y-6">
+
+                <div class="space-y-2">
+                  <label class="tech-heading" for="task-title">Identificador de Tarea:</label>
+                  <input type="text" id="task-title" name="title" required
+                    class="advenica-input w-full"
+                    placeholder="DESCRIBA LA OPERACIÓN..." />
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label class="tech-heading" for="task-tags">Etiquetas de Clasificación:</label>
+                    <input type="text" id="task-tags" name="tags"
+                      class="advenica-input w-full"
+                      placeholder="EJ: SISTEMAS, SEGURIDAD, DAM" />
+                  </div>
+                  <div class="space-y-2">
+                    <label class="tech-heading" for="task-deadline">Plazo de Ejecución:</label>
+                    <input type="text" id="task-deadline" name="deadline"
+                      class="advenica-input w-full"
+                      placeholder="EJ: 24H RESTANTES" />
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="tech-heading" for="task-priority">Nivel de Prioridad:</label>
+                  <select id="task-priority" name="priority"
+                    class="advenica-input w-full appearance-none cursor-pointer">
+                    <option value="high">ALTA (CRITICAL)</option>
+                    <option value="medium" selected>MEDIA (STANDARD)</option>
+                    <option value="low">BAJA (LOW)</option>
+                  </select>
+                </div>
+
+                <div class="pt-6 flex justify-end">
+                  <button type="submit" class="advenica-btn">REGISTRAR TAREA</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- fin formulario -->
+
+          <!-- ACCIONES MASIVAS -->
+          <div class="task-bulk-actions pt-4 flex flex-col sm:flex-row gap-4">
+            <button type="button" id="complete-all-tasks"
+              class="flex-1 py-3 border border-advenica-accent/20 text-[0.6rem]
+                     font-black uppercase tracking-[0.3em] text-advenica-accent
+                     hover:bg-advenica-accent hover:text-white transition-all rounded-sm">
+              COMPLETAR TODO
+            </button>
+            <button type="button" id="clear-completed-tasks"
+              class="flex-1 py-3 bg-advenica-accent text-white text-[0.6rem]
+                     font-black uppercase tracking-[0.3em]
+                     hover:bg-white hover:text-black transition-all
+                     shadow-xl shadow-advenica-accent/20 rounded-sm">
+              ARCHIVAR FINALIZADAS
+            </button>
+          </div>
+
         </section>
       </main>
-    </div>
-  </div>
+      <!-- fin main -->
 
-  <!-- Modal de Archivo -->
-  <div id="archive-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-lg shadow-xl border border-slate-300 dark:border-slate-700 overflow-hidden flex flex-col max-h-[90vh]">
-      <!-- Header del Modal -->
-      <div class="bg-slate-800 dark:bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-700">
-        <h2 class="text-xl font-bold flex items-center gap-2">
-          📁 Archivo de Tareas
-        </h2>
-        <button id="close-archive-btn" class="text-slate-300 hover:text-white transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </div>
+    <!-- fin layout -->
+
+  </div>
+  <!-- fin page-wrapper -->
+
+
+  <!-- =====================================================
+       MODAL DE ARCHIVO
+       Cambio 6: añade "Seleccionar todas" + "Eliminar definitivamente"
+  ====================================================== -->
+  <div id="archive-modal"
+    class="hidden fixed inset-0 z-[100] overflow-y-auto bg-black/95
+           backdrop-blur-xl flex items-center justify-center p-6">
+
+    <div class="bg-advenica-navy w-full max-w-3xl rounded-sm shadow-2xl
+                border border-advenica-accent/20 overflow-hidden
+                flex flex-col max-h-[90vh]">
+
+      <!-- Cabecera del modal -->
+      <div class="bg-black text-white px-10 py-8 flex items-center justify-between
+                  border-b border-advenica-accent/30">
+        <div class="flex items-center gap-4">
+          <span class="text-3xl text-advenica-accent">📁</span>
+          <h2 class="text-2xl font-black uppercase tracking-tighter italic">
+            REGISTRO HISTÓRICO
+          </h2>
+        </div>
+        <button id="close-archive-btn"
+          class="p-3 hover:bg-advenica-accent/10 rounded-full transition-colors text-advenica-accent">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
-      <!-- Contenido del Modal -->
-      <div class="p-6 overflow-y-auto flex-1">
-        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
-          Aquí se encuentran tus tareas completadas. Puedes recuperarlas si es necesario.
-        </p>
-        
-        <ul id="archive-list" class="task-list">
-          <!-- Las tareas archivadas se cargarán aquí -->
-        </ul>
+      <!-- Cuerpo del modal -->
+      <div class="p-10 overflow-y-auto flex-1">
+        <p class="tech-heading mb-6">OPERACIONES ARCHIVADAS</p>
 
-        <div id="archive-empty-msg" class="text-center py-10 hidden">
-          <p class="text-slate-400 italic">No hay tareas archivadas aún.</p>
+        <!-- Barra de control masivo (visible solo cuando hay tareas archivadas) -->
+        <div id="archive-controls"
+          class="hidden flex-col sm:flex-row items-start sm:items-center
+                 justify-between gap-4 mb-8 pb-6 border-b border-advenica-accent/10">
+
+          <label for="archive-select-all" class="flex items-center gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              id="archive-select-all"
+              class="w-4 h-4 cursor-pointer accent-sky-400" />
+            <span class="text-[0.6rem] font-black uppercase tracking-widest
+                         text-slate-500 group-hover:text-advenica-accent transition-colors">
+              SELECCIONAR TODAS
+            </span>
+          </label>
+
+          <button id="archive-delete-selected-btn" type="button"
+            class="text-[0.55rem] px-5 py-2.5 font-black uppercase tracking-widest
+                   bg-red-500/10 border border-red-500/30 text-red-500
+                   hover:bg-red-500 hover:text-white transition-all rounded-sm">
+            ⚠ ELIMINAR SELECCIONADAS
+          </button>
+        </div>
+
+        <!-- Lista de tareas archivadas (se rellena dinámicamente) -->
+        <ul id="archive-list" class="space-y-4"></ul>
+
+        <!-- Mensaje vacío -->
+        <div id="archive-empty-msg" class="text-center py-24 hidden">
+          <div class="text-6xl mb-6 opacity-5">📂</div>
+          <p class="text-[0.7rem] font-black text-slate-600 uppercase tracking-[0.6em]">
+            SIN REGISTROS DISPONIBLES
+          </p>
         </div>
       </div>
 
-      <!-- Footer del Modal (Estadísticas rápidas) -->
-      <div class="bg-slate-50 dark:bg-slate-900/50 px-6 py-3 border-t border-slate-300 dark:border-slate-700 flex justify-between items-center">
-        <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Estadísticas del Archivo</span>
-        <div class="flex gap-4 text-sm">
-          <span>Archivadas: <span id="archive-count" class="font-bold text-sky-600 dark:text-sky-400">0</span></span>
+      <!-- Pie del modal -->
+      <div class="bg-black/40 px-10 py-6 border-t border-advenica-accent/10
+                  flex justify-between items-center">
+        <span class="text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.4em]">
+          RESUMEN DE ARCHIVO
+        </span>
+        <div class="text-sm font-black text-advenica-accent uppercase tracking-tighter">
+          TOTAL ARCHIVADAS:
+          <span id="archive-modal-count" class="text-2xl ml-2">0</span>
         </div>
       </div>
+
     </div>
   </div>
+  <!-- fin modal archivo -->
 
-  <!-- PIE -->
-  <footer class="app-footer">
-    App UNO - Organización
+
+  <!-- FOOTER -->
+  <footer class="max-w-4xl mx-auto py-12 text-center">
+    <div class="flex flex-col items-center gap-4">
+      <div class="h-px w-24 bg-gradient-to-r from-transparent via-advenica-accent/40 to-transparent"></div>
+      <p class="text-[0.65rem] font-black text-slate-600 uppercase tracking-[0.8em]">
+        ADVENICA TASKFLOW SYSTEM v4.0
+      </p>
+    </div>
   </footer>
+
+  <!-- El botón flotante de archivo ha sido eliminado (cambio 3) -->
+
+  <script src="app.js" defer></script>
 </body>
 </html>
-
-<!-- Dropdown menu placeholder -->
-<div class="dropdown-container relative inline-block">
-  <button id="dropdown-trigger" class="dropdown-trigger text-xs px-3 py-1 rounded border border-slate-300 bg-slate-700 hover:bg-slate-600 dark:bg-slate-100 dark:text-slate-900 dark:border-slate-300 dark:hover:bg-white">
-    Más opciones ▾
-  </button>
-  <div id="dropdown-menu" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded shadow-lg z-10">
-    <!-- Dropdown items will be added here later -->
-  </div>
-</div>
-<!-- Button to open archive -->
-<button id="open-archive-btn" class="fixed bottom-4 right-4 z-40 flex items-center gap-2 px-4 py-2 rounded-full shadow-lg bg-sky-600 hover:bg-sky-700 text-white font-medium transition-all transform hover:scale-105 active:scale-95">
-  📁 Ver Archivo
-</button>

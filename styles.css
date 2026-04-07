@@ -1,28 +1,27 @@
 /* =========================
    VARIABLES GLOBALES
+   (usadas también para overrides de modo luz)
    ========================= */
 :root {
-  /* Colores estilo web / foro clásico */
-  --color-bg: #dcdcdc;              /* fondo general gris claro */
-  --color-page: #ffffff;            /* fondo principal blanco */
-  --color-header: #003366;          /* azul cabecera */
-  --color-header-text: #ffffff;
-  --color-sidebar-bg: #f2f2f2;      /* lateral gris claro */
-  --color-border: #cccccc;
-  --color-border-soft: #e5e5e5;
-  --color-primary: #336699;
-  --color-link: #003399;
-  --color-text: #000000;
-  --color-text-muted: #555555;
+  --color-bg:           #dcdcdc;
+  --color-page:         #ffffff;
+  --color-header:       #002244;
+  --color-header-text:  #ffffff;
+  --color-sidebar-bg:   #f1f5f9;
+  --color-border:       #cccccc;
+  --color-border-soft:  #e5e5e5;
+  --color-primary:      #00a0e3;
+  --color-link:         #003399;
+  --color-text:         #1e293b;
+  --color-text-muted:   #64748b;
 
-  --color-tag-bg: #eef4ff;
-  --color-tag-border: #c8d4f5;
+  --color-tag-bg:       #eef4ff;
+  --color-tag-border:   #c8d4f5;
 
-  --priority-high: #cc0000;
-  --priority-medium: #cc9900;
-  --priority-low: #009933;
+  --priority-high:      #cc0000;
+  --priority-medium:    #d97706;
+  --priority-low:       #0369a1;
 
-  /* Espaciados y bordes */
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 12px;
@@ -30,14 +29,12 @@
   --radius-sm: 3px;
   --radius-md: 4px;
 
-  /* Tipografía */
-  --font-family: "Verdana", "Tahoma", system-ui, -apple-system, "Segoe UI",
-    sans-serif;
+  --font-family: "Verdana", "Tahoma", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-size-base: 14px;
 }
 
 /* =========================
-   ESTILOS GENERALES
+   RESET BÁSICO
    ========================= */
 *,
 *::before,
@@ -49,717 +46,511 @@ body {
   margin: 0;
   font-family: var(--font-family);
   font-size: var(--font-size-base);
-  background-color: var(--color-bg);
-  color: var(--color-text);
 }
 
-/* Contenedor principal tipo foro */
+
+/* =========================
+   TOGGLE SWITCH DE TEMA (cambio 4)
+   El CSS controla la apariencia según la clase .dark en <html>.
+
+   MODO OSCURO (.dark):  fondo blanco  + círculo negro  → desplazado a la derecha
+   MODO LUZ (sin .dark): fondo negro   + círculo gris   → posición izquierda
+   ========================= */
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  outline: none;
+}
+.theme-toggle-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 160, 227, 0.4);
+}
+
+.theme-toggle-track {
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  position: relative;
+  transition: background-color 0.35s ease, border-color 0.35s ease;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.35s ease;
+}
+
+/* Estado: MODO OSCURO — fondo blanco, círculo negro a la derecha */
+.dark .theme-toggle-track {
+  background-color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.dark .theme-toggle-thumb {
+  background-color: #000000;
+  transform: translateX(24px);
+}
+
+/* Estado: MODO LUZ — fondo negro, círculo gris claro a la izquierda */
+html:not(.dark) .theme-toggle-track {
+  background-color: #000000;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+html:not(.dark) .theme-toggle-thumb {
+  background-color: #d1d5db;
+  transform: translateX(0px);
+}
+
+
+/* =========================
+   TARJETA DE NUEVA TAREA (cambio 1)
+   Aspecto "fantasma" para invitar al clic.
+   Los textos de placeholder usan opacidad baja.
+   ========================= */
+
+.new-task-card {
+  background-color: transparent;
+  border: 1px dashed rgba(0, 160, 227, 0.15);
+  transition: background-color 0.2s ease, border-color 0.2s ease;+
+}
+.new-task-card:hover {
+  background-color: rgba(0, 160, 227, 0.04);
+  border-color: rgba(0, 160, 227, 0.30);
+}
+
+/* Textos placeholder en modo oscuro */
+.dark .ntc-title,
+.dark .ntc-tag,
+.dark .ntc-badge {
+  color: rgba(255, 255, 255, 0.2);
+}
+.dark .ntc-meta {
+  color: rgba(0, 160, 227, 0.2);
+}
+.dark .ntc-expand {
+  background-color: rgba(0, 160, 227, 0.12);
+  color: rgba(0, 160, 227, 0.5);
+}
+.dark .new-task-card:hover .ntc-expand {
+  background-color: rgba(0, 160, 227, 0.25);
+  color: rgba(0, 160, 227, 0.9);
+}
+
+/* Textos placeholder en modo luz */
+html:not(.dark) .ntc-title,
+html:not(.dark) .ntc-tag,
+html:not(.dark) .ntc-badge {
+  color: rgba(30, 41, 59, 0.25);
+}
+html:not(.dark) .ntc-meta {
+  color: rgba(0, 120, 180, 0.3);
+}
+html:not(.dark) .ntc-expand {
+  background-color: rgba(0, 160, 227, 0.10);
+  color: rgba(0, 120, 180, 0.5);
+}
+html:not(.dark) .new-task-card:hover .ntc-expand {
+  background-color: rgba(0, 160, 227, 0.20);
+  color: rgba(0, 120, 180, 1);
+}
+
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+   ========================= */
 .page-wrapper {
   max-width: 960px;
   margin: 0 auto;
-  background-color: var(--color-page);
-  border: 1px solid var(--color-border);
-  border-top: none;
-  min-height: 100vh;
 }
 
 /* =========================
-   CABECERA
+   CABECERA (cambio 2 — sin sticky)
    ========================= */
 .app-header {
   max-width: 960px;
   margin: 0 auto;
-  background-color: var(--color-header);
-  color: var(--color-header-text);
-  padding: var(--space-md) var(--space-lg);
-  border: 1px solid #002244;
-  border-bottom: none;
-}
-
-.app-header h1 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.app-header .subtitle {
-  margin: var(--space-xs) 0 0;
-  font-size: 11px;
 }
 
 /* =========================
    LAYOUT PRINCIPAL
    ========================= */
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 2.5fr; /* aside más estrecho, main más ancho */
-  gap: var(--space-lg);
-  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
 }
-
-/* MAIN */
-main {
-  border: 1px solid var(--color-border);
-  padding: var(--space-md);
-  background-color: var(--color-page);
-}
-
-.task-section + .task-section {
-  margin-top: var(--space-lg);
-}
-
-.task-section h2 {
-  margin-top: 0;
-  border-bottom: 1px solid var(--color-border-soft);
-  padding-bottom: var(--space-xs);
-  font-size: 16px;
+@media (min-width: 768px) {
+  .layout {
+    flex-direction: row;
+  }
 }
 
 /* =========================
    SIDEBAR
    ========================= */
-.sidebar {
-  border: 1px solid var(--color-border);
-  padding: var(--space-md);
-  background-color: var(--color-sidebar-bg);
-}
-
-/* Buscador */
-.field-label {
-  display: block;
-  font-size: 12px;
-  margin-bottom: var(--space-xs);
-}
-
-.search-input {
-  width: 100%;
-  padding: 3px 4px;
-  font-size: 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-/* Menú */
+   
 .menu-section {
-  margin-top: var(--space-lg);
+  /* espaciado gestionado por Tailwind */
 }
-
-.menu-title {
-  margin: 0 0 var(--space-xs) 0;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-
-/* Contenedor de categorías: fila con wrap */
-.category-menu {
-  display: flex;
-  flex-wrap: wrap;        /* 🔥 aquí está la magia del salto de línea */
-  gap: 4px;               /* espacio horizontal/vertical entre globos */
-}
-
-/* Cada categoría como “píldora” compacta */
-.category-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 6px;
-  font-size: 11px;
-  border-radius: 999px;   /* forma de pastilla */
-  border: 1px solid var(--color-border);
-  background-color: #ffffff;
-  color: var(--color-text);
-  cursor: default;        /* de momento solo informativo */
-  white-space: nowrap;    /* que no rompa la palabra dentro */
-}
-
-.category-pill:hover {
-  border-color: var(--color-primary);
-}
-
-.priority-menu { /* MENÚ DE PRIORIDADES */
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.priority-filter {
-  padding: 2px 6px;
-  font-size: 11px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background-color: #ffffff;
-  color: var(--color-text);
-  cursor: pointer;
-}
-
-.priority-filter:hover {
-  border-color: var(--color-primary);
-}
-
-.priority-filter.active {
-  background-color: #dde7f7;
-  border-color: var(--color-primary);
-  font-weight: bold;
-}
-
 
 /* =========================
-   LISTA DE TAREAS (FLEX)
+   BUSCADOR SUPERIOR
    ========================= */
+.top-searchbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
+/* =========================
+   LISTA DE TAREAS
+   ========================= */
 .task-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Cada li envuelve checkbox + tarjeta */
-.task {
-  margin-bottom: var(--space-sm);
-}
-
-/* Checkbox oculto: controla el estado de la tarjeta */
-.task-toggle {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-
-/* Tarjeta de tarea: contenedor principal */
-.task-item {
-  display: flex; /* ya lo tenías como flex */
-  align-items: flex-start;
-  justify-content: space-between; /* contenido a la izquierda, acciones a la derecha */
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--color-border);
-  background-color: #fdfdfd;
-  cursor: pointer;
-  gap: var(--space-md);
-  transition: /* transiciones suaves para hover y estado completado */
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    opacity 0.25s ease;
-}
-
-/* columna izquierda */
-.task-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-/* título + deadline en la misma fila */
-.task-title-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-md);
-}
-
-/* Botón que ocupa el título de la tarea */
-.task-title-button {
-  font-family: var(--font-family);
-  font-size: 13px;
-  font-weight: bold;
-  border: 1px solid #e0c466;         /* amarillo suave */
-  background-color: #fff7cc;          /* fondo amarillo pastel */
-  border-radius: 4px;
-  padding: 2px 6px;
-  cursor: pointer;
-  color: var(--color-text);
-}
-
-/* Al pasar el ratón, un poquito más oscuro */
-.task-title-button:hover {
-  background-color: #ffef99;
-}
-
-/* Quitar el borde azul feo por defecto pero respetar accesibilidad */
-.task-title-button:focus-visible {
-  outline: 2px solid #336699;         /* o el color principal de tu tema */
-  outline-offset: 2px;
-}
-
-/* Input temporal para editar el título */
+/* Input temporal de edición inline del título */
 .task-title-input {
   font-family: var(--font-family);
   font-size: 13px;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(0, 160, 227, 0.4);
   border-radius: var(--radius-sm);
-  padding: 2px 4px;
+  padding: 2px 6px;
   width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  outline: none;
   box-sizing: border-box;
 }
-
-/* En móvil, subir tamaño para evitar zoom automático */
 @media (max-width: 768px) {
   .task-title-input {
-    font-size: 16px;
+    font-size: 16px; /* evitar zoom automático en iOS */
   }
 }
 
-/* columna derecha: badge + botón */
-.task-side {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 8px; /* separación entre badge y botón */
-} 
- 
-/* Separador sutil estilo tabla/foro */
-.task + .task .task-item {
-  border-top: 1px solid var(--color-border);
+/* Botón que muestra el título (editable al clic) */
+.task-title-button {
+  font-family: var(--font-family);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-/* Hover clásico */
-.task-item:hover {
-  background-color: #f5f5ff;
-  border-color: var(--color-primary);
+/* =========================
+   BADGE DE PRIORIDAD
+   ========================= */
+.priority-high   { border-color: var(--priority-high)  !important; color: var(--priority-high)   !important; }
+.priority-medium { border-color: var(--priority-medium) !important; color: var(--priority-medium) !important; }
+.priority-low    { border-color: var(--priority-low)    !important; color: var(--priority-low)    !important; }
+
+/* =========================
+   BOTÓN FILTRO PRIORIDAD — estado activo
+   ========================= */
+.priority-filter.active {
+  background-color: rgba(0, 160, 227, 0.15) !important;
+  border-color: rgba(0, 160, 227, 0.6) !important;
+  color: #00a0e3 !important;
 }
 
-/* Columna izquierda: título, tags, categoría */
-.task-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
+/* =========================
+   CHECKBOX SELECCIÓN EN ARCHIVO
+   ========================= */
+.archive-item-checkbox {
+  flex-shrink: 0;
 }
 
-/* Fila título + cuenta atrás */
-.task-title-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-md);
+
+/* ============================================================
+   MODO LUZ — OVERRIDES COMPLETOS (cambio 5)
+
+   Problema raíz: Tailwind aplica `bg-advenica-black text-slate-100`
+   al body siempre, desde @layer base. Sin modo oscuro activo la
+   interfaz queda negra igualmente.
+   Solución: selector `html:not(.dark)` con !important para forzar
+   los estilos claros sobre los Tailwind oscuros.
+   ============================================================ */
+
+/* — Fondo de página — */
+html:not(.dark) body {
+  background-color: #f0f4f8 !important;
+  color: var(--color-text) !important;
 }
 
-.task-title {
-  margin: 0;
-  font-size: 13px;
+html:not(.dark) .split-bg {
+  background: radial-gradient(
+    circle at 50% 0%,
+    #dbeafe 0%,
+    #f0f4f8 100%
+  ) !important;
 }
 
-.task-deadline {
-  font-size: 11px;
-  color: var(--color-text-muted);
+/* — Cabecera: mantener navy oscuro (mismo tono que modo dark) — */
+html:not(.dark) .app-header {
+  background-color: rgba(0, 34, 68, 0.97) !important;
+  backdrop-filter: none !important;
+  border-color: rgba(0, 80, 160, 0.3) !important;
+}
+/* El h1 y subtítulo dentro de la cabecera se quedan blancos */
+html:not(.dark) .app-header h1,
+html:not(.dark) .app-header p {
+  color: inherit !important; /* heredan del header que es blanco */
 }
 
-/* Categorías como globos */
-.task-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: var(--space-xs);
+/* — Contenedor principal — */
+html:not(.dark) .page-wrapper {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10) !important;
 }
 
-.task-tag {
-  display: inline-block;
-  padding: 2px 6px;
-  font-size: 11px;
-  border-radius: 999px;
-  background-color: var(--color-tag-bg);
-  border: 1px solid var(--color-tag-border);
+/* — Buscador — */
+html:not(.dark) .top-searchbar {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) #search {
+  color: var(--color-text) !important;
+}
+html:not(.dark) #search::placeholder {
+  color: #94a3b8 !important;
+}
+html:not(.dark) .search-icon {
+  color: #94a3b8 !important;
 }
 
-/* BADGE de prioridad a la derecha */
-.task-badge {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+/* — Sidebar — */
+html:not(.dark) .sidebar {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* — Estadísticas: el total que era blanco — */
+html:not(.dark) #stats-total {
+  color: var(--color-text) !important;
+}
+
+/* — Botones de filtro de prioridad — */
+html:not(.dark) .advenica-btn-outline {
+  border-color: rgba(0, 160, 227, 0.35) !important;
+  color: #0284c7 !important;
+  background-color: transparent !important;
+}
+html:not(.dark) .advenica-btn-outline:hover {
+  background-color: #00a0e3 !important;
+  color: #ffffff !important;
+}
+html:not(.dark) .priority-filter.active {
+  background-color: rgba(0, 160, 227, 0.12) !important;
+  border-color: rgba(0, 160, 227, 0.5) !important;
+  color: #0284c7 !important;
+}
+/* Mantener colores de prioridad en los filtros rojo/amber/azul */
+html:not(.dark) .priority-filter[data-priority="high"] {
+  color: #dc2626 !important;
+  border-color: rgba(220, 38, 38, 0.35) !important;
+}
+html:not(.dark) .priority-filter[data-priority="medium"] {
+  color: #d97706 !important;
+  border-color: rgba(217, 119, 6, 0.35) !important;
+}
+html:not(.dark) .priority-filter[data-priority="low"] {
+  color: #2563eb !important;
+  border-color: rgba(37, 99, 235, 0.35) !important;
+}
+
+/* — Contenido principal — */
+html:not(.dark) main {
+  background-color: #ffffff !important;
+}
+
+/* — Título de sección — */
+html:not(.dark) .task-section h2 {
+  color: var(--color-text) !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* — Tarjetas de tarea — */
+html:not(.dark) .task {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06) !important;
+}
+html:not(.dark) .task:hover {
+  background-color: #f0f9ff !important;
+  border-color: #7dd3fc !important;
+}
+
+/* Título de tarea: era text-white */
+html:not(.dark) .task .task-title-button {
+  color: var(--color-text) !important;
+}
+html:not(.dark) .task .task-title-button:hover {
+  color: #0284c7 !important;
+}
+/* Título tachado (completada) */
+html:not(.dark) .task .task-title-button.line-through {
+  color: #94a3b8 !important;
+}
+
+/* Deadline */
+html:not(.dark) .task-deadline {
+  color: #64748b !important;
+}
+
+/* Tags */
+html:not(.dark) .task-tag {
+  background-color: #f0f9ff !important;
+  border-color: #bae6fd !important;
+  color: #0369a1 !important;
+}
+
+/* Input de edición inline en modo luz */
+html:not(.dark) .task-title-input {
+  background-color: #ffffff !important;
+  border-color: #00a0e3 !important;
+  color: var(--color-text) !important;
+}
+
+/* — Formulario de nueva tarea — */
+html:not(.dark) #new-task-form-panel > div {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .advenica-input {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: var(--color-text) !important;
+}
+html:not(.dark) .advenica-input::placeholder {
+  color: #94a3b8 !important;
+}
+html:not(.dark) .advenica-input:focus {
+  border-color: #00a0e3 !important;
+  background-color: #ffffff !important;
+}
+html:not(.dark) .advenica-input option {
   background-color: #ffffff;
-  white-space: nowrap;
+  color: var(--color-text);
 }
 
-.priority-high {
-  border-color: var(--priority-high);
-  color: var(--priority-high);
+/* Tech-headings (etiquetas de campo) */
+html:not(.dark) .tech-heading {
+  color: #0284c7 !important;
+  border-color: #0284c7 !important;
 }
 
-.priority-medium {
-  border-color: var(--priority-medium);
-  color: var(--priority-medium);
+/* Botón primario submit */
+html:not(.dark) .advenica-btn {
+  background-color: #00a0e3 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 160, 227, 0.25) !important;
+}
+html:not(.dark) .advenica-btn:hover {
+  background-color: #002244 !important;
+  color: #ffffff !important;
 }
 
-.priority-low {
-  border-color: var(--priority-low);
-  color: var(--priority-low);
+/* — Acciones masivas — */
+html:not(.dark) #complete-all-tasks {
+  border-color: rgba(0, 160, 227, 0.3) !important;
+  color: #0284c7 !important;
 }
+html:not(.dark) #complete-all-tasks:hover {
+  background-color: #00a0e3 !important;
+  color: #ffffff !important;
+}
+html:not(.dark) #clear-completed-tasks {
+  background-color: #00a0e3 !important;
+  color: #ffffff !important;
+}
+html:not(.dark) #clear-completed-tasks:hover {
+  background-color: #002244 !important;
+  color: #ffffff !important;
+}
+
+/* — Botón de archivar en cada tarea — */
+html:not(.dark) .task-archive-btn {
+  color: #94a3b8 !important;
+}
+html:not(.dark) .task-archive-btn:hover {
+  color: #0284c7 !important;
+  background-color: #eff6ff !important;
+}
+
+/* — Botón de archivo en cabecera — */
+html:not(.dark) #open-archive-btn {
+  border-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+html:not(.dark) #open-archive-btn:hover {
+  color: #0284c7 !important;
+  border-color: rgba(0, 160, 227, 0.4) !important;
+}
+html:not(.dark) #open-archive-btn #archive-count {
+  color: #0284c7 !important;
+}
+
+/* — Footer — */
+html:not(.dark) footer p {
+  color: #94a3b8 !important;
+}
+
 
 /* =========================
-   ESTADO COMPLETADO (BONUS)
+   RESPONSIVE MÓVIL
    ========================= */
-/* Cuando el checkbox está marcado, la tarjeta cambia suavemente */
-.task-toggle:checked + .task-item {
-  background-color: #f1f1f1;
-  border-color: var(--color-border-soft);
-  opacity: 0.7;
-}
-
-.task-toggle:checked + .task-item .task-title {
-  text-decoration: line-through;
-  color: var(--color-text-muted);
-}
-
-/* =========================
-   FOOTER
-   ========================= */
-.app-footer {
-  max-width: 960px;
-  margin: 0 auto;
-  border: 1px solid var(--color-border);
-  border-top: none;
-  padding: var(--space-sm) var(--space-lg);
-  background-color: #f5f5f5;
-  font-size: 11px;
-  text-align: right;
-  color: var(--color-text-muted);
-}
-
-/* MEDIA QUERY (MÓVIL) */
 @media (max-width: 768px) {
   .layout {
-    display: flex;
-    flex-direction: column; /* aside encima del main en móvil */
-    padding: var(--space-md);
-  }
-
-  .sidebar {
-    margin-bottom: var(--space-md);
-  }
-
-  .task-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .task-badge {
-    align-self: flex-end;
-  }
-
-  .task-title-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-@media (max-width: 480px) { /* Versión móvil más compacta */
-  .task-item {
-    padding: 8px 10px;
-    gap: 8px;
-  }
-
-  .task-title {
-    font-size: 14px;
-  }
-
-  .task-deadline {
-    font-size: 12px;
-  }
-
-  .task-tag,
-  .task-badge,
-  .task-delete {
-    font-size: 12px;
-  }
-
-    .task-item { /* badge y botón se colocan arriba a la derecha */
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .task-title-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .task-side {
-    align-self: flex-end;
-  }
-  
-  input, /* Importante: evitar zoom forzado en inputs/botones */
-  select,
-  button {
-    font-size: 16px; /* mínimo 16px en móvil */
-  }
-}
-
-@media (max-width: 768px) { /* 📱 En móvil, el sidebar pasa abajo del contenido */
-  .layout {
-    display: flex;
     flex-direction: column;
   }
-
   .sidebar {
     order: 2;
   }
-
   main {
     order: 1;
   }
 }
 
-
-/* ====== FORMULARIO DE NUEVA TAREA ====== */
-.task-form {
-  border: 1px solid var(--color-border);
-  padding: var(--space-md);
-  margin-bottom: var(--space-lg);
-  background-color: #f9f9f9;
-}
-
-.form-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: var(--space-sm);
-}
-
-.form-row label {
-  font-size: 12px;
-  margin-bottom: 2px;
-}
-
-.form-row input,
-.form-row select {
-  font-size: 12px;
-  padding: 3px 4px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-.btn-primary {
-  margin-top: var(--space-sm);
-  font-size: 12px;
-  padding: 4px 8px;
-  border: 1px solid var(--color-primary);
-  background-color: #dde7f7;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: #c5d6f0;
-}
-
-/* Botón de eliminar tarea */
-.task-delete {
-  margin-left: var(--space-sm);
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background-color: #ffffff;
-  color: var(--color-text-muted);
-  cursor: pointer;
-}
-
-.task-delete:hover {
-  border-color: var(--priority-high);
-  color: var(--priority-high);
-}
-
-/* ====== ESTADÍSTICAS ====== */
-.stats-list {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-  font-size: 12px;
-}
-
-.stats-list li {
-  margin-bottom: 2px;
-}
-
-/* ---------- COLAPSABLE ---------- */
-
-.collapsible-header {
-  cursor: pointer;
-  user-select: none;
-}
-
-.collapsible-content {
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.2s ease;
-  max-height: none; /* PC por defecto */
-}
-
-/* 📱 En móvil: arrancar colapsado */
-@media (max-width: 768px) {
-
-  .collapsible-content {
-    max-height: 0;
-    padding: 0;
-  }
-
-  .collapsible-content.open {
-    max-height: 1000px; /* suficientemente grande */
-    padding: var(--space-md) 0;
-  }
-}
-
-/* ============================
-   BUSCADOR SUPERIOR FIJO
-============================ */
-
-.top-searchbar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  background: #f2f2f2;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.search-icon {
-  font-size: 16px;
-}
-
-.top-search-input {
-  flex: 1;
-  padding: 6px 8px;
-  font-size: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-/* PC: buscador más estrecho, alineado a la izquierda */
-@media (min-width: 769px) {
-  .top-searchbar {
-    max-width: 260px;          /* lo dejamos como ancho tipo sidebar */
-    margin-bottom: 12px;
-  }
-}
-
-/* MÓVIL: buscador a pantalla completa */
-@media (max-width: 768px) {
-  .top-searchbar {
-    position: sticky;          /* queda pegado arriba al hacer scroll */
-    top: 0;
-    z-index: 20;
-    width: 100%;
-  }
-
-  .top-search-input {
-    font-size: 16px;           /* evitar zoom del móvil */
+@media (max-width: 480px) {
+  input,
+  select,
+  button {
+    font-size: 16px; /* evitar zoom automático en iOS */
   }
 }
 
 
-/* ====== ACCIONES MASIVAS ====== */
-
-.task-bulk-actions {
-  margin-top: 8px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.bulk-action-btn {
-  font-family: var(--font-family);
-  font-size: 12px;
-  font-weight: bold;
-  border: 1px solid #e0c466;       /* amarillo suave como el título */
-  background-color: #fff7cc;        /* fondo amarillo pastel */
-  border-radius: 4px;
-  padding: 4px 8px;
-  cursor: pointer;
-  color: var(--color-text);
-}
-
-.bulk-action-btn:hover {
-  background-color: #ffef99;
-}
-
-/* En móvil, aseguramos tamaño cómodo para evitar zoom automático */
-@media (max-width: 768px) {
-  .bulk-action-btn {
-    font-size: 16px;
-    padding: 6px 10px;
-  }
-}
-
-/* Modo oscuro: paneles */
+/* =========================
+   MODO OSCURO (dark class en <html>)
+   Mantiene los overrides del diseño Advenica original.
+   ========================= */
 .dark .sidebar,
 .dark .page-wrapper,
-.dark main,
-.dark .task-section,
-.dark .stats-section {
-  background-color: #1e293b !important; /* slate-800 */
-  color: #f1f5f9 !important;            /* slate-100 */
-  border-color: #334155 !important;     /* slate-700 */
+.dark main {
+  background-color: inherit;
 }
 
 .dark .task-tag {
-  background-color: #334155 !important;  /* slate-700 */
-  border-color: #475569 !important;      /* slate-600 */
-  color: #f8fafc !important;             /* slate-50 */
-}
-.dark .task-item {
-  background-color: #334155 !important;  /* slate-700 */
-  border-color: #475569 !important;      /* slate-600 */
-  color: #f8fafc !important;             /* slate-50 */
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(0, 160, 227, 0.1) !important;
+  color: rgba(0, 160, 227, 0.8) !important;
 }
 
-.dark .category-pill {
-  background-color: #334155 !important;
-  border-color: #475569 !important;
-  color: #f1f5f9 !important;
+.dark .task-title-input {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(0, 160, 227, 0.4) !important;
+  color: #ffffff !important;
 }
-.dark .priority-filter {
-  background-color: #334155 !important;
-  border-color: #475569 !important;
-  color: #f1f5f9 !important;
-}
-
-.dark .task-title-button {
-  background-color: #854d0e !important;  /* amber-800 */
-  border-color: #a16207 !important;      /* amber-700 */
-  color: #fff !important;
-}
-
-.dark .task-title-button:hover {
-  background-color: #b45309 !important;  /* amber-600 */
-}
-
-.dark input,
-.dark select,
-.dark textarea {
-  background-color: #1e293b !important; /* slate-800 */
-  color: #f8fafc !important;            /* slate-50 */
-  border-color: #334155 !important;     /* slate-700 */
-}
-
-.dark input::placeholder {
-  color: #94a3b8 !important;           /* slate-400 */
-}
-
-.dark .bulk-action-btn,
-.dark .btn-primary {
-  background-color: #854d0e !important;
-  border-color: #a16207 !important;
-  color: white !important;
-}
-
-.dark .bulk-action-btn:hover,
-.dark .btn-primary:hover {
-  background-color: #b45309 !important;
-}
-
-.dark .task-item {
-  background-color: #1e293b !important;
-  border-color: #334155 !important;
-}
-
-.dark .task-item:hover {
-  background-color: #334155 !important;
-  border-color: #475569 !important;
-}
-
-.dark .task-toggle:checked + .task-item {
-  background-color: #475569 !important; /* slate-600 */
-  opacity: 0.6;
-}
-.dark .task-toggle:checked + .task-item .task-title {
-  text-decoration: line-through;
-  color: #94a3b8 !important; /* slate-400 */
-}
-

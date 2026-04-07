@@ -58,6 +58,10 @@ Desktop.ini
 # Backups
 *.bak
 
+# Archivos de secretos
+.trae/
+.env
+
 # Archivos ZIP o exportaciones
 *.zip
 *.rar
@@ -66,3 +70,4 @@ Desktop.ini
 
 # Archivos inútiles o sobrantes
 *.map
+
