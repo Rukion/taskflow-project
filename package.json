@@ -1,0 +1,27 @@
+{
+  "name": "proyecto_practicas",
+  "version": "1.0.0",
+  "description": "Aplicación web sencilla para gestionar tareas:   [App UNO][1] cómo práctica de DAM en [Corner-Estudios][2]  [1]: https://taskflow-project-virid.vercel.app  [2]: https://www.corner-estudios.com/",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rukion/taskflow-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Rukion/taskflow-project/issues"
+  },
+  "homepage": "https://github.com/Rukion/taskflow-project#readme",
+  "devDependencies": {
+    "tailwindcss": "^4.2.2"
+  }
+}

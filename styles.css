@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* =========================
    VARIABLES GLOBALES
    (usadas también para overrides de modo luz)
@@ -170,16 +174,18 @@ html:not(.dark) .new-task-card:hover .ntc-expand {
    CONTENEDOR PRINCIPAL
    ========================= */
 .page-wrapper {
-  max-width: 960px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 2rem;
 }
 
 /* =========================
    CABECERA (cambio 2 — sin sticky)
    ========================= */
 .app-header {
-  max-width: 960px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
 }
 
 /* =========================
@@ -553,4 +559,125 @@ html:not(.dark) footer p {
   background-color: rgba(0, 0, 0, 0.6) !important;
   border-color: rgba(0, 160, 227, 0.4) !important;
   color: #ffffff !important;
+}
+
+.task-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+@media (min-width: 1280px) {
+  .page-wrapper {
+    padding: 0 4rem;
+  }
+
+  .sidebar {
+    width: 20rem;
+  }
+}
+
+/* MOBILE TASK LAYOUT (375x667 y similares) */
+.task-toggle { align-self: center; } /* en pantallas grandes se centra en el eje vertical */
+
+@media (max-width: 640px) {
+  .task {
+    align-items: flex-start;     /* deja respirar al contenido */
+    padding-top: 3.25rem;        /* reserva espacio para checkbox + badge */
+  }
+
+  /* Checkbox: no ocupa columna fija, va “flotante” arriba-izq */
+  .task-toggle {
+    position: absolute;
+    top: 0.9rem;
+    left: 0.9rem;
+    margin: 0;
+  }
+
+  /* Lado derecho: badge + botón archivar arriba-dcha en columna */
+  .task-side {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  /* Badge compacto (A/M/B) */
+  .task-badge {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    letter-spacing: 0.15em;
+  }
+
+  /* El botón de archivar no debe depender del hover en móvil */
+  .task-archive-btn {
+    opacity: 1 !important;
+    padding: 0.45rem;
+  }
+
+  /* Tags más compactas para que “quepa todo” */
+  .task-meta { gap: 0.4rem; }
+  .task-tag { padding: 0.15rem 0.45rem; }
+
+  /* Por si algún texto se desborda */
+  .task-title-button { word-break: break-word; }
+}
+
+/* 1) Barra vertical izquierda de prioridad */
+.task::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--task-priority-color, transparent);
+  opacity: 0.95;
+}
+
+/* Colores por prioridad (puedes ajustar tonos si quieres) */
+.task-priority-high   { --task-priority-color: #dc2626; } /* rojo */
+.task-priority-medium { --task-priority-color: #d97706; } /* ámbar */
+.task-priority-low    { --task-priority-color: #2563eb; } /* azul */
+
+/* 2) Badge: por defecto muestra el texto completo */
+.task-badge .badge-short { display: none; }
+.task-badge .badge-full  { display: inline; }
+
+/* 3) Habilitar container queries: el propio .task decide según SU ancho */
+.task {
+  container-type: inline-size;
+}
+
+/* Cuando el contenedor se estrecha: mostramos letra en vez del texto */
+@container (max-width: 700px) {
+  .task-badge .badge-full  { display: none; }
+  .task-badge .badge-short { display: inline; }
+}
+
+/* Pantallas pequeñas: ocultamos el badge de prioridad */
+@container (max-width: 420px) {
+  .task-badge { display: none; }
+}
+
+/* 4) Fallback si el navegador NO soporta container queries */
+@media (max-width: 700px) {
+  .task-badge .badge-full  { display: none; }
+  .task-badge .badge-short { display: inline; }
+}
+
+@media (max-width: 420px) {
+  .task-badge { display: none; }
 }

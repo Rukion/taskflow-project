@@ -339,12 +339,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const { id, title, tags, priority, deadline, completed } = task;
 
     // — Contenedor principal de la tarea —
-    const li = document.createElement("li");
+    const li = document.createElement("li");    
     li.className = [
-      "task group relative p-6 bg-advenica-navy/30 backdrop-blur-md",
+      "task group relative",
+      "p-4 sm:p-6",
+      "bg-advenica-navy/30 backdrop-blur-md",
       "border border-advenica-accent/5 rounded-sm shadow-xl",
       "hover:bg-advenica-accent/5 hover:border-advenica-accent/30",
-      "transition-all flex items-center gap-6",
+      "transition-all flex md:items-center gap-4 sm:gap-6",
     ].join(" ");
     if (isArchive) li.classList.add("opacity-60");
 
@@ -365,15 +367,18 @@ document.addEventListener("DOMContentLoaded", () => {
     taskContent.className = "flex-1 min-w-0";
 
     const titleRow = document.createElement("div");
-    titleRow.className = "flex items-center gap-4 mb-3";
+    titleRow.className = "task-title-row flex flex-col sm:flex-row sm:items-center sm:gap-4 mb-3 min-w-0";
 
     const titleButton = document.createElement("button");
-    titleButton.type      = "button";
+    titleButton.type      = "button";    
     titleButton.className = [
-      "task-title-button text-lg font-black text-white truncate",
+      "task-title-button text-base sm:text-lg font-black text-white",
       "hover:text-advenica-accent transition-colors text-left",
-      "uppercase tracking-tight",
+      "uppercase tracking-tight leading-snug",
+      "break-words min-w-0",
+      "md:truncate" // solo truncar a partir de md
     ].join(" ");
+
     if (completed) titleButton.classList.add("line-through", "opacity-30");
     titleButton.textContent = title;
     if (!isArchive) enableTitleButtonEditing(titleButton, id);
@@ -406,24 +411,52 @@ document.addEventListener("DOMContentLoaded", () => {
     const taskSide = document.createElement("div");
     taskSide.className = "task-side flex items-center gap-3 flex-shrink-0";
 
-    // Badge de prioridad
+    // Badge de prioridad    
     const badge = document.createElement("span");
     badge.className = "task-badge text-[0.55rem] font-black uppercase px-3 py-1.5 rounded-sm border tracking-[0.2em]";
+
+    // IMPORTANTE: mostramos dos versiones (full y short) y el CSS decide
+    const full = document.createElement("span");
+    full.className = "badge-full";
+
+    const short = document.createElement("span");
+    short.className = "badge-short";
+
     switch (priority) {
       case "high":
+        // Clase para la línea izquierda (NO uses priority-high aquí para no romper bordes por !important)
+        li.classList.add("task-priority-high");
+
+        // Estilos del badge (estos sí usan tus clases existentes)
         badge.classList.add("priority-high", "bg-red-500/10", "text-red-500", "border-red-500/20");
-        badge.textContent = "CRITICAL";
+
+        full.textContent = "CRITICAL";
+        short.textContent = "A";
+        badge.title = "ALTA (CRITICAL)";
         break;
+
       case "medium":
+        li.classList.add("task-priority-medium");
         badge.classList.add("priority-medium", "bg-amber-500/10", "text-amber-500", "border-amber-500/20");
-        badge.textContent = "STANDARD";
+
+        full.textContent = "STANDARD";
+        short.textContent = "M";
+        badge.title = "MEDIA (STANDARD)";
         break;
+
       case "low":
       default:
+        li.classList.add("task-priority-low");
         badge.classList.add("priority-low", "bg-blue-500/10", "text-blue-500", "border-blue-500/20");
-        badge.textContent = "LOW";
+
+        full.textContent = "LOW";
+        short.textContent = "B";
+        badge.title = "BAJA (LOW)";
         break;
     }
+
+    badge.appendChild(full);
+    badge.appendChild(short);
     taskSide.appendChild(badge);
 
     if (isArchive) {
